@@ -1,2 +1,7 @@
 .idea/
 cmake-build-debug/
+cmake-build-release/
+dist/
+build/
+_build/
+pywuffs.egg-info/

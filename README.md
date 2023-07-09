@@ -1,1 +1,54 @@
-# wuffs-simple-imdec-api
+# pywuffs
+
+This project is intended to enable using [Wuffs the Library](https://github.com/google/wuffs) from Python code. For now,
+it only provides bindings for image decoding part of
+the [Auxiliary C++ API](https://github.com/google/wuffs/blob/main/doc/note/auxiliary-code.md) as being of the most
+interest since it provides for "ridiculously fast" decoding of images of some types.
+
+Current version of Wuffs library used in this project is **0.3.3**.
+
+## Installation
+
+### Using pip
+
+```bash
+python3 -m pip install git+https://github.com/dev0x13/pywuffs.git
+```
+
+### Using setuptools
+
+```bash
+python3 -m pip install -r requirements
+python3 setup.py install
+```
+
+### Using CMake
+
+#### Linux
+
+```bash
+mkdir _build && cd _build
+cmake ..
+make
+```
+
+#### Windows
+
+```shell
+mkdir _build && cd _build
+cmake -A x64 ..
+cmake --build .
+```
+
+## Implementation goals
+
+1. Bindings are supposed to be as close as possible to the original C and C++ Wuffs API. The differences are only
+   justified when it's hardly possible to transfer the API entries to Python as is.
+2. Bindings are not supposed to add much overhead. Because of that some parts of the API are not as convenient as they
+   expected to be.
+
+## Roadmap
+
+1. Wheel installation through PyPI.
+2. Bindings for other parts of `wuffs_aux` API (JSON, CBOR decoding).
+3. Bindings for the C API of Wuffs the Library.
