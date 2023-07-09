@@ -1,7 +1,3 @@
-import os
-import sys
-import re
-
 project = 'pywuffs'
 copyright = '2023, pywuffs authors'
 

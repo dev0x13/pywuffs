@@ -172,6 +172,37 @@ struct ImageDecodingResult {
   }
 };
 
+struct ImageDecoderError {
+  static const std::string MaxInclDimensionExceeded;
+  static const std::string MaxInclMetadataLengthExceeded;
+  static const std::string OutOfMemory;
+  static const std::string UnexpectedEndOfFile;
+  static const std::string UnsupportedImageFormat;
+  static const std::string UnsupportedMetadata;
+  static const std::string UnsupportedPixelBlend;
+  static const std::string UnsupportedPixelConfiguration;
+  static const std::string UnsupportedPixelFormat;
+};
+
+const std::string ImageDecoderError::MaxInclDimensionExceeded =
+    wuffs_aux::DecodeImage_MaxInclDimensionExceeded;
+const std::string ImageDecoderError::MaxInclMetadataLengthExceeded =
+    wuffs_aux::DecodeImage_MaxInclMetadataLengthExceeded;
+const std::string ImageDecoderError::OutOfMemory =
+    wuffs_aux::DecodeImage_OutOfMemory;
+const std::string ImageDecoderError::UnexpectedEndOfFile =
+    wuffs_aux::DecodeImage_UnexpectedEndOfFile;
+const std::string ImageDecoderError::UnsupportedImageFormat =
+    wuffs_aux::DecodeImage_UnsupportedImageFormat;
+const std::string ImageDecoderError::UnsupportedMetadata =
+    wuffs_aux::DecodeImage_UnsupportedMetadata;
+const std::string ImageDecoderError::UnsupportedPixelBlend =
+    wuffs_aux::DecodeImage_UnsupportedPixelBlend;
+const std::string ImageDecoderError::UnsupportedPixelConfiguration =
+    wuffs_aux::DecodeImage_UnsupportedPixelConfiguration;
+const std::string ImageDecoderError::UnsupportedPixelFormat =
+    wuffs_aux::DecodeImage_UnsupportedPixelFormat;
+
 class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
  public:
   explicit ImageDecoder(const ImageDecoderConfig& config)

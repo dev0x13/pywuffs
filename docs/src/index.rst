@@ -1,20 +1,12 @@
-pywuffs
-=======
-
-:ref:`genindex`
+pywuffs module
+==============
 
 .. automodule:: pywuffs
-   :members: wuffs_base__more_information, VectorUint8, VectorMetadataEntry
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 .. automodule:: pywuffs.aux
-   :members: MetadataEntry, ImageDecoderFlags, ImageDecoderQuirks, ImageDecoderType, PixelFormat,
-             ImageDecoderConfig, ImageDecodingResult, ImageDecoder, PixelBlend,
-             ImageDecoderErrorMaxInclDimensionExceeded,
-             ImageDecoderErrorMaxInclMetadataLengthExceeded,
-             ImageDecoderErrorMaxInclMetadataLengthExceeded,
-             ImageDecoderErrorUnexpectedEndOfFile,
-             ImageDecoderErrorUnsupportedImageFormat,
-             ImageDecoderErrorUnsupportedMetadata,
-             ImageDecoderErrorUnsupportedPixelBlend,
-             ImageDecoderErrorUnsupportedPixelConfiguration,
-             ImageDecoderErrorUnsupportedPixelFormat
+   :members:
+   :undoc-members:
+   :show-inheritance:

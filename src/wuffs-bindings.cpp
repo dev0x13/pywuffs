@@ -230,6 +230,37 @@ PYBIND11_MODULE(pywuffs, m) {
           "- PixelFormat.RGBA_NONPREMUL\n"
           "- PixelFormat.RGBA_PREMUL");
 
+  py::class_<wuffs_aux_wrap::ImageDecoderError>(aux_m, "ImageDecoderError")
+      .def_readonly_static(
+          "MaxInclDimensionExceeded",
+          &wuffs_aux_wrap::ImageDecoderError::MaxInclDimensionExceeded)
+      .def_readonly_static(
+          "MaxInclMetadataLengthExceeded",
+          &wuffs_aux_wrap::ImageDecoderError::MaxInclMetadataLengthExceeded)
+      .def_readonly_static("OutOfMemory",
+                           &wuffs_aux_wrap::ImageDecoderError::OutOfMemory)
+      .def_readonly_static(
+          "UnexpectedEndOfFile",
+          &wuffs_aux_wrap::ImageDecoderError::UnexpectedEndOfFile)
+      .def_readonly_static(
+          "UnsupportedImageFormat",
+          &wuffs_aux_wrap::ImageDecoderError::UnsupportedImageFormat)
+      .def_readonly_static(
+          "UnsupportedMetadata",
+          &wuffs_aux_wrap::ImageDecoderError::UnsupportedMetadata)
+      .def_readonly_static(
+          "UnsupportedPixelBlend",
+          &wuffs_aux_wrap::ImageDecoderError::UnsupportedPixelBlend)
+      .def_readonly_static(
+          "MaxInclDimensionExceeded",
+          &wuffs_aux_wrap::ImageDecoderError::MaxInclDimensionExceeded)
+      .def_readonly_static(
+          "UnsupportedPixelConfiguration",
+          &wuffs_aux_wrap::ImageDecoderError::UnsupportedPixelConfiguration)
+      .def_readonly_static(
+          "UnsupportedPixelFormat",
+          &wuffs_aux_wrap::ImageDecoderError::UnsupportedPixelFormat);
+
   py::class_<wuffs_aux_wrap::ImageDecodingResult>(
       aux_m, "ImageDecodingResult",
       "Image decoding result. The fields depend on whether decoding "
@@ -245,34 +276,16 @@ PYBIND11_MODULE(pywuffs, m) {
       .def_readonly("decoded_data",
                     &wuffs_aux_wrap::ImageDecodingResult::decoded_data,
                     "VectorUint8: a byte buffer containing decoded data.")
-      .def_readonly("reported_metadata",
-                    &wuffs_aux_wrap::ImageDecodingResult::reported_metadata,
-                    "VectorMetadataEntry: a list-like object containing reported data "
-                    "(only filled is any metadata was decoded and the "
-                    "corresponding ImageDecoderFlag flag was set).")
+      .def_readonly(
+          "reported_metadata",
+          &wuffs_aux_wrap::ImageDecodingResult::reported_metadata,
+          "VectorMetadataEntry: a list-like object containing reported data "
+          "(only filled is any metadata was decoded and the "
+          "corresponding ImageDecoderFlag flag was set).")
       .def_readonly("error_message",
                     &wuffs_aux_wrap::ImageDecodingResult::error_message,
                     "str: error message, empty on success, one of "
-                    "ImageDecoderError* on error.");
-
-  aux_m.attr("ImageDecoderErrorMaxInclDimensionExceeded") =
-      wuffs_aux::DecodeImage_MaxInclDimensionExceeded;
-  aux_m.attr("ImageDecoderErrorMaxInclMetadataLengthExceeded") =
-      wuffs_aux::DecodeImage_MaxInclMetadataLengthExceeded;
-  aux_m.attr("ImageDecoderErrorMaxInclMetadataLengthExceeded") =
-      wuffs_aux::DecodeImage_OutOfMemory;
-  aux_m.attr("ImageDecoderErrorUnexpectedEndOfFile") =
-      wuffs_aux::DecodeImage_UnexpectedEndOfFile;
-  aux_m.attr("ImageDecoderErrorUnsupportedImageFormat") =
-      wuffs_aux::DecodeImage_UnsupportedImageFormat;
-  aux_m.attr("ImageDecoderErrorUnsupportedMetadata") =
-      wuffs_aux::DecodeImage_UnsupportedMetadata;
-  aux_m.attr("ImageDecoderErrorUnsupportedPixelBlend") =
-      wuffs_aux::DecodeImage_UnsupportedPixelBlend;
-  aux_m.attr("ImageDecoderErrorUnsupportedPixelConfiguration") =
-      wuffs_aux::DecodeImage_UnsupportedPixelConfiguration;
-  aux_m.attr("ImageDecoderErrorUnsupportedPixelFormat") =
-      wuffs_aux::DecodeImage_UnsupportedPixelFormat;
+                    "ImageDecoderError on error.");
 
   py::class_<wuffs_aux_wrap::ImageDecoder>(aux_m, "ImageDecoder",
                                            "Image decoder class.")

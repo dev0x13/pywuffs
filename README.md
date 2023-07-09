@@ -1,4 +1,4 @@
-# pywuffs
+# pywuffs: Python bindings for Wuffs the Library
 
 This project is intended to enable using [Wuffs the Library](https://github.com/google/wuffs) from Python code. For now,
 it only provides bindings for image decoding part of
@@ -39,6 +39,10 @@ mkdir _build && cd _build
 cmake -A x64 ..
 cmake --build .
 ```
+
+## API reference
+
+API documentation is available at https://dev0x13.github.io/pywuffs. 
 
 ## Implementation goals
 

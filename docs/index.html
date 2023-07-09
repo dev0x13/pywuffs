@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pywuffs &mdash; pywuffs  documentation</title>
+  <title>pywuffs module &mdash; pywuffs  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -42,7 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">pywuffs</a><ul>
+<li><a class="reference internal" href="#">pywuffs module</a><ul>
 <li><a class="reference internal" href="#pywuffs.VectorMetadataEntry"><code class="docutils literal notranslate"><span class="pre">VectorMetadataEntry</span></code></a><ul>
 <li><a class="reference internal" href="#pywuffs.VectorMetadataEntry.append"><code class="docutils literal notranslate"><span class="pre">VectorMetadataEntry.append()</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.VectorMetadataEntry.clear"><code class="docutils literal notranslate"><span class="pre">VectorMetadataEntry.clear()</span></code></a></li>
@@ -62,12 +62,17 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#pywuffs.wuffs_base__more_information"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information</span></code></a><ul>
+<li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.flavor"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.flavor</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.io_redirect__fourcc"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.io_redirect__fourcc()</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.io_seek__position"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.io_seek__position()</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.metadata__fourcc"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.metadata__fourcc()</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.metadata_parsed__chrm"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.metadata_parsed__chrm()</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.metadata_parsed__gama"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.metadata_parsed__gama()</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.metadata_parsed__srgb"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.metadata_parsed__srgb()</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.w"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.w</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.x"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.x</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.y"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.y</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.wuffs_base__more_information.z"><code class="docutils literal notranslate"><span class="pre">wuffs_base__more_information.z</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoder"><code class="docutils literal notranslate"><span class="pre">ImageDecoder</span></code></a><ul>
@@ -85,16 +90,57 @@
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoderConfig.quirks"><code class="docutils literal notranslate"><span class="pre">ImageDecoderConfig.quirks</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError</span></code></a><ul>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.MaxInclDimensionExceeded"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.MaxInclDimensionExceeded</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.MaxInclMetadataLengthExceeded"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.MaxInclMetadataLengthExceeded</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.OutOfMemory"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.OutOfMemory</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.UnexpectedEndOfFile"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.UnexpectedEndOfFile</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.UnsupportedImageFormat"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.UnsupportedImageFormat</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.UnsupportedMetadata"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.UnsupportedMetadata</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.UnsupportedPixelBlend"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.UnsupportedPixelBlend</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.UnsupportedPixelConfiguration"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.UnsupportedPixelConfiguration</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderError.UnsupportedPixelFormat"><code class="docutils literal notranslate"><span class="pre">ImageDecoderError.UnsupportedPixelFormat</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags</span></code></a><ul>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_BGCL"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_BGCL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_CHRM"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_CHRM</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_EXIF"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_EXIF</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_GAMA"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_GAMA</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_ICCP"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_ICCP</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_KVP"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_KVP</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_MTIM"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_MTIM</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_OFS2"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_OFS2</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_PHYD"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_PHYD</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_SRGB"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_SRGB</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_XMP"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.REPORT_METADATA_XMP</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.name"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.name</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderFlags.value"><code class="docutils literal notranslate"><span class="pre">ImageDecoderFlags.value</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks</span></code></a><ul>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.GIF_DELAY_NUM_DECODED_FRAMES"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.GIF_DELAY_NUM_DECODED_FRAMES</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.GIF_IGNORE_TOO_MUCH_PIXEL_DATA"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.GIF_IGNORE_TOO_MUCH_PIXEL_DATA</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.GIF_IMAGE_BOUNDS_ARE_STRICT"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.GIF_IMAGE_BOUNDS_ARE_STRICT</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.GIF_QUIRK_HONOR_BACKGROUND_COLOR"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.GIF_QUIRK_HONOR_BACKGROUND_COLOR</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.GIF_REJECT_EMPTY_FRAME"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.GIF_REJECT_EMPTY_FRAME</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.GIF_REJECT_EMPTY_PALETTE"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.GIF_REJECT_EMPTY_PALETTE</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.IGNORE_CHECKSUM"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.IGNORE_CHECKSUM</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.name"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.name</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderQuirks.value"><code class="docutils literal notranslate"><span class="pre">ImageDecoderQuirks.value</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType</span></code></a><ul>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.BMP"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.BMP</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.GIF"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.GIF</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.JPEG"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.JPEG</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.NIE"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.NIE</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.PNG"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.PNG</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.TGA"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.TGA</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.WBMP"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.WBMP</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.name"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.name</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.ImageDecoderType.value"><code class="docutils literal notranslate"><span class="pre">ImageDecoderType.value</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pywuffs.aux.ImageDecodingResult"><code class="docutils literal notranslate"><span class="pre">ImageDecodingResult</span></code></a><ul>
@@ -109,11 +155,47 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#pywuffs.aux.PixelBlend"><code class="docutils literal notranslate"><span class="pre">PixelBlend</span></code></a><ul>
+<li><a class="reference internal" href="#pywuffs.aux.PixelBlend.SRC"><code class="docutils literal notranslate"><span class="pre">PixelBlend.SRC</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelBlend.SRC_OVER"><code class="docutils literal notranslate"><span class="pre">PixelBlend.SRC_OVER</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.aux.PixelBlend.name"><code class="docutils literal notranslate"><span class="pre">PixelBlend.name</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelBlend.value"><code class="docutils literal notranslate"><span class="pre">PixelBlend.value</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pywuffs.aux.PixelFormat"><code class="docutils literal notranslate"><span class="pre">PixelFormat</span></code></a><ul>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.A"><code class="docutils literal notranslate"><span class="pre">PixelFormat.A</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGR"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGR</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGRA_BINARY"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGRA_BINARY</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGRA_NONPREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGRA_NONPREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGRA_NONPREMUL_4X16LE"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGRA_NONPREMUL_4X16LE</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGRA_PREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGRA_PREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGRA_PREMUL_4X16LE"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGRA_PREMUL_4X16LE</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGRX"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGRX</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.BGR_565"><code class="docutils literal notranslate"><span class="pre">PixelFormat.BGR_565</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.CMY"><code class="docutils literal notranslate"><span class="pre">PixelFormat.CMY</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.CMYK"><code class="docutils literal notranslate"><span class="pre">PixelFormat.CMYK</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.INDEXED__BGRA_BINARY"><code class="docutils literal notranslate"><span class="pre">PixelFormat.INDEXED__BGRA_BINARY</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.INDEXED__BGRA_NONPREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.INDEXED__BGRA_NONPREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.INDEXED__BGRA_PREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.INDEXED__BGRA_PREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.RGB"><code class="docutils literal notranslate"><span class="pre">PixelFormat.RGB</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.RGBA_BINARY"><code class="docutils literal notranslate"><span class="pre">PixelFormat.RGBA_BINARY</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.RGBA_NONPREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.RGBA_NONPREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.RGBA_NONPREMUL_4X16LE"><code class="docutils literal notranslate"><span class="pre">PixelFormat.RGBA_NONPREMUL_4X16LE</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.RGBA_PREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.RGBA_PREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.RGBA_PREMUL_4X16LE"><code class="docutils literal notranslate"><span class="pre">PixelFormat.RGBA_PREMUL_4X16LE</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.RGBX"><code class="docutils literal notranslate"><span class="pre">PixelFormat.RGBX</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.Y"><code class="docutils literal notranslate"><span class="pre">PixelFormat.Y</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YA_NONPREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YA_NONPREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YA_PREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YA_PREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YCBCR"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YCBCR</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YCBCRA_NONPREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YCBCRA_NONPREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YCBCRK"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YCBCRK</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YCOCG"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YCOCG</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YCOCGA_NONPREMUL"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YCOCGA_NONPREMUL</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.YCOCGK"><code class="docutils literal notranslate"><span class="pre">PixelFormat.YCOCGK</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.Y_16BE"><code class="docutils literal notranslate"><span class="pre">PixelFormat.Y_16BE</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.Y_16LE"><code class="docutils literal notranslate"><span class="pre">PixelFormat.Y_16LE</span></code></a></li>
 <li><a class="reference internal" href="#pywuffs.aux.PixelFormat.name"><code class="docutils literal notranslate"><span class="pre">PixelFormat.name</span></code></a></li>
+<li><a class="reference internal" href="#pywuffs.aux.PixelFormat.value"><code class="docutils literal notranslate"><span class="pre">PixelFormat.value</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -134,7 +216,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">pywuffs</li>
+      <li class="breadcrumb-item active">pywuffs module</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -144,14 +226,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pywuffs">
-<h1>pywuffs<a class="headerlink" href="#pywuffs" title="Permalink to this heading"></a></h1>
-<p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p>
-<span class="target" id="module-pywuffs"></span><p>Python bindings for Wuffs the Library.</p>
+  <section id="module-pywuffs">
+<span id="pywuffs-module"></span><h1>pywuffs module<a class="headerlink" href="#module-pywuffs" title="Permalink to this heading"></a></h1>
+<p>Python bindings for Wuffs the Library.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.VectorMetadataEntry">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.</span></span><span class="sig-name descname"><span class="pre">VectorMetadataEntry</span></span><a class="headerlink" href="#pywuffs.VectorMetadataEntry" title="Permalink to this definition"></a></dt>
-<dd><p>Auxiliary list-like class holding instances of MetadataEntry for zero-copy data transfers between Python and C++. Exposes append, clear, extend, insert, pop, and some iterator methods.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Auxiliary list-like class holding instances of MetadataEntry for zero-copy data transfers between Python and C++. Exposes append, clear, extend, insert, pop, and some iterator methods.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pywuffs.VectorMetadataEntry.append">
 <span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self:</span> <span class="pre">List[wuffs_aux_wrap::MetadataEntry],</span> <span class="pre">x:</span> <span class="pre">wuffs_aux_wrap::MetadataEntry</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pywuffs.VectorMetadataEntry.append" title="Permalink to this definition"></a></dt>
@@ -203,7 +285,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.VectorUint8">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.</span></span><span class="sig-name descname"><span class="pre">VectorUint8</span></span><a class="headerlink" href="#pywuffs.VectorUint8" title="Permalink to this definition"></a></dt>
-<dd><p>Auxiliary class for zero-copy data transfers between Python and C++. Exposes append, clear, extend, insert, pop, and some iterator methods. Implements buffer protocol, so it can be used with memoryview.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Auxiliary class for zero-copy data transfers between Python and C++. Exposes append, clear, extend, insert, pop, and some iterator methods. Implements buffer protocol, so it can be used with memoryview.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pywuffs.VectorUint8.append">
 <span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pywuffs.VectorUint8" title="pywuffs.VectorUint8"><span class="pre">pywuffs.VectorUint8</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pywuffs.VectorUint8.append" title="Permalink to this definition"></a></dt>
@@ -267,7 +350,13 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.wuffs_base__more_information">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.</span></span><span class="sig-name descname"><span class="pre">wuffs_base__more_information</span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information" title="Permalink to this definition"></a></dt>
-<dd><p>Holds additional fields. The flavor field follows the base38 namespace convention. The other fields’ semantics depends on the flavor.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Holds additional fields. The flavor field follows the base38 namespace convention. The other fields’ semantics depends on the flavor.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.wuffs_base__more_information.flavor">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flavor</span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information.flavor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pywuffs.wuffs_base__more_information.io_redirect__fourcc">
 <span class="sig-name descname"><span class="pre">io_redirect__fourcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pywuffs.wuffs_base__more_information" title="pywuffs.wuffs_base__more_information"><span class="pre">pywuffs.wuffs_base__more_information</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information.io_redirect__fourcc" title="Permalink to this definition"></a></dt>
@@ -298,13 +387,34 @@
 <span class="sig-name descname"><span class="pre">metadata_parsed__srgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pywuffs.wuffs_base__more_information" title="pywuffs.wuffs_base__more_information"><span class="pre">pywuffs.wuffs_base__more_information</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information.metadata_parsed__srgb" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.wuffs_base__more_information.w">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">w</span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information.w" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.wuffs_base__more_information.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information.x" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.wuffs_base__more_information.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information.y" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.wuffs_base__more_information.z">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#pywuffs.wuffs_base__more_information.z" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <span class="target" id="module-pywuffs.aux"></span><p>Simplified “auxiliary” API.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">ImageDecoder</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoder" title="Permalink to this definition"></a></dt>
-<dd><p>Image decoder class.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Image decoder class.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoder.decode">
 <span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pywuffs.aux.ImageDecoder.decode" title="Permalink to this definition"></a></dt>
@@ -346,7 +456,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderConfig">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">ImageDecoderConfig</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderConfig" title="Permalink to this definition"></a></dt>
-<dd><p>Image decoder configuration.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Image decoder configuration.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderConfig.background_color">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">background_color</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderConfig.background_color" title="Permalink to this definition"></a></dt>
@@ -449,9 +560,61 @@
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">ImageDecoderError</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.MaxInclDimensionExceeded">
+<span class="sig-name descname"><span class="pre">MaxInclDimensionExceeded</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">max_incl_dimension</span> <span class="pre">exceeded'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.MaxInclDimensionExceeded" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.MaxInclMetadataLengthExceeded">
+<span class="sig-name descname"><span class="pre">MaxInclMetadataLengthExceeded</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">max_incl_metadata_length</span> <span class="pre">exceeded'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.MaxInclMetadataLengthExceeded" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.OutOfMemory">
+<span class="sig-name descname"><span class="pre">OutOfMemory</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">out</span> <span class="pre">of</span> <span class="pre">memory'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.OutOfMemory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.UnexpectedEndOfFile">
+<span class="sig-name descname"><span class="pre">UnexpectedEndOfFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">unexpected</span> <span class="pre">end</span> <span class="pre">of</span> <span class="pre">file'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.UnexpectedEndOfFile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.UnsupportedImageFormat">
+<span class="sig-name descname"><span class="pre">UnsupportedImageFormat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">unsupported</span> <span class="pre">image</span> <span class="pre">format'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.UnsupportedImageFormat" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.UnsupportedMetadata">
+<span class="sig-name descname"><span class="pre">UnsupportedMetadata</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">unsupported</span> <span class="pre">metadata'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.UnsupportedMetadata" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.UnsupportedPixelBlend">
+<span class="sig-name descname"><span class="pre">UnsupportedPixelBlend</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">unsupported</span> <span class="pre">pixel</span> <span class="pre">blend'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.UnsupportedPixelBlend" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.UnsupportedPixelConfiguration">
+<span class="sig-name descname"><span class="pre">UnsupportedPixelConfiguration</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">unsupported</span> <span class="pre">pixel</span> <span class="pre">configuration'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.UnsupportedPixelConfiguration" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderError.UnsupportedPixelFormat">
+<span class="sig-name descname"><span class="pre">UnsupportedPixelFormat</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'wuffs_aux::DecodeImage:</span> <span class="pre">unsupported</span> <span class="pre">pixel</span> <span class="pre">format'</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderError.UnsupportedPixelFormat" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">ImageDecoderFlags</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags" title="Permalink to this definition"></a></dt>
-<dd><p>Flags to defining image decoder behavior (e.g. metadata reporting).</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Flags to defining image decoder behavior (e.g. metadata reporting).</p>
 <p>Members:</p>
 <blockquote>
 <div><p>REPORT_METADATA_BGCL : Background Color.</p>
@@ -466,9 +629,69 @@
 <p>REPORT_METADATA_SRGB : Standard Red Green Blue (Rendering Intent).</p>
 <p>REPORT_METADATA_XMP : Extensible Metadata Platform.</p>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_BGCL">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_BGCL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_BGCL:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_BGCL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_CHRM">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_CHRM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_CHRM:</span> <span class="pre">2&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_CHRM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_EXIF">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_EXIF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_EXIF:</span> <span class="pre">4&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_EXIF" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_GAMA">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_GAMA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_GAMA:</span> <span class="pre">8&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_GAMA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_ICCP">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_ICCP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_ICCP:</span> <span class="pre">16&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_ICCP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_KVP">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_KVP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_KVP:</span> <span class="pre">32&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_KVP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_MTIM">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_MTIM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_MTIM:</span> <span class="pre">64&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_MTIM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_OFS2">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_OFS2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_OFS2:</span> <span class="pre">128&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_OFS2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_PHYD">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_PHYD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_PHYD:</span> <span class="pre">256&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_PHYD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_SRGB">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_SRGB</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_SRGB:</span> <span class="pre">512&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_SRGB" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_XMP">
+<span class="sig-name descname"><span class="pre">REPORT_METADATA_XMP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderFlags.REPORT_METADATA_XMP:</span> <span class="pre">1024&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.REPORT_METADATA_XMP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderFlags.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderFlags.value" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -476,7 +699,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">ImageDecoderQuirks</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks" title="Permalink to this definition"></a></dt>
-<dd><p>See <a class="reference external" href="https://github.com/google/wuffs/blob/main/doc/note/quirks.md">https://github.com/google/wuffs/blob/main/doc/note/quirks.md</a>.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>See <a class="reference external" href="https://github.com/google/wuffs/blob/main/doc/note/quirks.md">https://github.com/google/wuffs/blob/main/doc/note/quirks.md</a>.</p>
 <p>Members:</p>
 <blockquote>
 <div><p>IGNORE_CHECKSUM : Favor faster decodes over rejecting invalid checksums.</p>
@@ -488,9 +712,54 @@
 <p>GIF_REJECT_EMPTY_FRAME</p>
 <p>GIF_REJECT_EMPTY_PALETTE</p>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.GIF_DELAY_NUM_DECODED_FRAMES">
+<span class="sig-name descname"><span class="pre">GIF_DELAY_NUM_DECODED_FRAMES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.GIF_DELAY_NUM_DECODED_FRAMES:</span> <span class="pre">1041635328&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.GIF_DELAY_NUM_DECODED_FRAMES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND">
+<span class="sig-name descname"><span class="pre">GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND:</span> <span class="pre">1041635329&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.GIF_IGNORE_TOO_MUCH_PIXEL_DATA">
+<span class="sig-name descname"><span class="pre">GIF_IGNORE_TOO_MUCH_PIXEL_DATA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.GIF_IGNORE_TOO_MUCH_PIXEL_DATA:</span> <span class="pre">1041635331&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.GIF_IGNORE_TOO_MUCH_PIXEL_DATA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.GIF_IMAGE_BOUNDS_ARE_STRICT">
+<span class="sig-name descname"><span class="pre">GIF_IMAGE_BOUNDS_ARE_STRICT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.GIF_IMAGE_BOUNDS_ARE_STRICT:</span> <span class="pre">1041635332&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.GIF_IMAGE_BOUNDS_ARE_STRICT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.GIF_QUIRK_HONOR_BACKGROUND_COLOR">
+<span class="sig-name descname"><span class="pre">GIF_QUIRK_HONOR_BACKGROUND_COLOR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.GIF_QUIRK_HONOR_BACKGROUND_COLOR:</span> <span class="pre">1041635330&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.GIF_QUIRK_HONOR_BACKGROUND_COLOR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.GIF_REJECT_EMPTY_FRAME">
+<span class="sig-name descname"><span class="pre">GIF_REJECT_EMPTY_FRAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.GIF_REJECT_EMPTY_FRAME:</span> <span class="pre">1041635333&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.GIF_REJECT_EMPTY_FRAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.GIF_REJECT_EMPTY_PALETTE">
+<span class="sig-name descname"><span class="pre">GIF_REJECT_EMPTY_PALETTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.GIF_REJECT_EMPTY_PALETTE:</span> <span class="pre">1041635334&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.GIF_REJECT_EMPTY_PALETTE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.IGNORE_CHECKSUM">
+<span class="sig-name descname"><span class="pre">IGNORE_CHECKSUM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderQuirks.IGNORE_CHECKSUM:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.IGNORE_CHECKSUM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderQuirks.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderQuirks.value" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -498,7 +767,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">ImageDecoderType</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderType" title="Permalink to this definition"></a></dt>
-<dd><p>Members:</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Members:</p>
 <p>BMP</p>
 <p>GIF</p>
 <p>NIE</p>
@@ -506,9 +776,49 @@
 <p>TGA</p>
 <p>WBMP</p>
 <p>JPEG</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.BMP">
+<span class="sig-name descname"><span class="pre">BMP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderType.BMP:</span> <span class="pre">1112363040&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.BMP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.GIF">
+<span class="sig-name descname"><span class="pre">GIF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderType.GIF:</span> <span class="pre">1195984416&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.GIF" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.JPEG">
+<span class="sig-name descname"><span class="pre">JPEG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderType.JPEG:</span> <span class="pre">1246774599&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.JPEG" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.NIE">
+<span class="sig-name descname"><span class="pre">NIE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderType.NIE:</span> <span class="pre">1313424672&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.NIE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.PNG">
+<span class="sig-name descname"><span class="pre">PNG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderType.PNG:</span> <span class="pre">1347307296&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.PNG" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.TGA">
+<span class="sig-name descname"><span class="pre">TGA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderType.TGA:</span> <span class="pre">1413955872&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.TGA" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.WBMP">
+<span class="sig-name descname"><span class="pre">WBMP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ImageDecoderType.WBMP:</span> <span class="pre">1463962960&gt;</span></em><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.WBMP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.aux.ImageDecoderType.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecoderType.value" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -516,7 +826,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecodingResult">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">ImageDecodingResult</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecodingResult" title="Permalink to this definition"></a></dt>
-<dd><p>Image decoding result. The fields depend on whether decoding succeeded:
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Image decoding result. The fields depend on whether decoding succeeded:
 - On total success, the error_message is empty and decoded_data is not empty.
 - On partial success (e.g. the input file was truncated but we are still able to decode some of the pixels), error_message is non-empty but decoded_data is not empty. It is up to the caller whether to accept or reject partial success.
 - On failure, the error_message is non-empty and decoded_data is empty.</p>
@@ -534,7 +845,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.ImageDecodingResult.error_message">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">error_message</span></span><a class="headerlink" href="#pywuffs.aux.ImageDecodingResult.error_message" title="Permalink to this definition"></a></dt>
-<dd><p>error message, empty on success, one of ImageDecoderError* on error.</p>
+<dd><p>error message, empty on success, one of ImageDecoderError on error.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
@@ -558,7 +869,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.MetadataEntry">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">MetadataEntry</span></span><a class="headerlink" href="#pywuffs.aux.MetadataEntry" title="Permalink to this definition"></a></dt>
-<dd><p>Holds parsed metadata piece.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Holds parsed metadata piece.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.MetadataEntry.data">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#pywuffs.aux.MetadataEntry.data" title="Permalink to this definition"></a></dt>
@@ -586,15 +898,31 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.PixelBlend">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">PixelBlend</span></span><a class="headerlink" href="#pywuffs.aux.PixelBlend" title="Permalink to this definition"></a></dt>
-<dd><p>Encodes how to blend source and destination pixels, accounting for transparency. It encompasses the Porter-Duff compositing operators as well as the other blending modes defined by PDF.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Encodes how to blend source and destination pixels, accounting for transparency. It encompasses the Porter-Duff compositing operators as well as the other blending modes defined by PDF.</p>
 <p>Members:</p>
 <blockquote>
 <div><p>SRC</p>
 <p>SRC_OVER</p>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelBlend.SRC">
+<span class="sig-name descname"><span class="pre">SRC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelBlend.SRC:</span> <span class="pre">0&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelBlend.SRC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelBlend.SRC_OVER">
+<span class="sig-name descname"><span class="pre">SRC_OVER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelBlend.SRC_OVER:</span> <span class="pre">1&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelBlend.SRC_OVER" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.PixelBlend.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pywuffs.aux.PixelBlend.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelBlend.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pywuffs.aux.PixelBlend.value" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -602,7 +930,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pywuffs.aux.PixelFormat">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pywuffs.aux.</span></span><span class="sig-name descname"><span class="pre">PixelFormat</span></span><a class="headerlink" href="#pywuffs.aux.PixelFormat" title="Permalink to this definition"></a></dt>
-<dd><p>Common 8-bit-depth pixel formats. This list is not exhaustive; not all valid wuffs_base__pixel_format values are present.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Common 8-bit-depth pixel formats. This list is not exhaustive; not all valid wuffs_base__pixel_format values are present.</p>
 <p>Members:</p>
 <blockquote>
 <div><p>A</p>
@@ -638,9 +967,174 @@
 <p>CMY</p>
 <p>CMYK</p>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.A">
+<span class="sig-name descname"><span class="pre">A</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.A:</span> <span class="pre">33554440&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.A" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGR">
+<span class="sig-name descname"><span class="pre">BGR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGR:</span> <span class="pre">2147485832&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGRA_BINARY">
+<span class="sig-name descname"><span class="pre">BGRA_BINARY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGRA_BINARY:</span> <span class="pre">2197850248&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGRA_BINARY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGRA_NONPREMUL">
+<span class="sig-name descname"><span class="pre">BGRA_NONPREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGRA_NONPREMUL:</span> <span class="pre">2164295816&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGRA_NONPREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGRA_NONPREMUL_4X16LE">
+<span class="sig-name descname"><span class="pre">BGRA_NONPREMUL_4X16LE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGRA_NONPREMUL_4X16LE:</span> <span class="pre">2164308923&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGRA_NONPREMUL_4X16LE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGRA_PREMUL">
+<span class="sig-name descname"><span class="pre">BGRA_PREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGRA_PREMUL:</span> <span class="pre">2181073032&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGRA_PREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGRA_PREMUL_4X16LE">
+<span class="sig-name descname"><span class="pre">BGRA_PREMUL_4X16LE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGRA_PREMUL_4X16LE:</span> <span class="pre">2181086139&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGRA_PREMUL_4X16LE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGRX">
+<span class="sig-name descname"><span class="pre">BGRX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGRX:</span> <span class="pre">2415954056&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGRX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.BGR_565">
+<span class="sig-name descname"><span class="pre">BGR_565</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.BGR_565:</span> <span class="pre">2147485029&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.BGR_565" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.CMY">
+<span class="sig-name descname"><span class="pre">CMY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.CMY:</span> <span class="pre">3221358728&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.CMY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.CMYK">
+<span class="sig-name descname"><span class="pre">CMYK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.CMYK:</span> <span class="pre">3489892488&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.CMYK" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.INDEXED__BGRA_BINARY">
+<span class="sig-name descname"><span class="pre">INDEXED__BGRA_BINARY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.INDEXED__BGRA_BINARY:</span> <span class="pre">2198077448&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.INDEXED__BGRA_BINARY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.INDEXED__BGRA_NONPREMUL">
+<span class="sig-name descname"><span class="pre">INDEXED__BGRA_NONPREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.INDEXED__BGRA_NONPREMUL:</span> <span class="pre">2164523016&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.INDEXED__BGRA_NONPREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.INDEXED__BGRA_PREMUL">
+<span class="sig-name descname"><span class="pre">INDEXED__BGRA_PREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.INDEXED__BGRA_PREMUL:</span> <span class="pre">2181300232&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.INDEXED__BGRA_PREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.RGB">
+<span class="sig-name descname"><span class="pre">RGB</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.RGB:</span> <span class="pre">2684356744&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.RGB" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.RGBA_BINARY">
+<span class="sig-name descname"><span class="pre">RGBA_BINARY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.RGBA_BINARY:</span> <span class="pre">2734721160&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.RGBA_BINARY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.RGBA_NONPREMUL">
+<span class="sig-name descname"><span class="pre">RGBA_NONPREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.RGBA_NONPREMUL:</span> <span class="pre">2701166728&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.RGBA_NONPREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.RGBA_NONPREMUL_4X16LE">
+<span class="sig-name descname"><span class="pre">RGBA_NONPREMUL_4X16LE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.RGBA_NONPREMUL_4X16LE:</span> <span class="pre">2701179835&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.RGBA_NONPREMUL_4X16LE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.RGBA_PREMUL">
+<span class="sig-name descname"><span class="pre">RGBA_PREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.RGBA_PREMUL:</span> <span class="pre">2717943944&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.RGBA_PREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.RGBA_PREMUL_4X16LE">
+<span class="sig-name descname"><span class="pre">RGBA_PREMUL_4X16LE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.RGBA_PREMUL_4X16LE:</span> <span class="pre">2717957051&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.RGBA_PREMUL_4X16LE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.RGBX">
+<span class="sig-name descname"><span class="pre">RGBX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.RGBX:</span> <span class="pre">2952824968&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.RGBX" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.Y">
+<span class="sig-name descname"><span class="pre">Y</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.Y:</span> <span class="pre">536870920&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.Y" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YA_NONPREMUL">
+<span class="sig-name descname"><span class="pre">YA_NONPREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YA_NONPREMUL:</span> <span class="pre">553648136&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YA_NONPREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YA_PREMUL">
+<span class="sig-name descname"><span class="pre">YA_PREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YA_PREMUL:</span> <span class="pre">570425352&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YA_PREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YCBCR">
+<span class="sig-name descname"><span class="pre">YCBCR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YCBCR:</span> <span class="pre">1073875080&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YCBCR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YCBCRA_NONPREMUL">
+<span class="sig-name descname"><span class="pre">YCBCRA_NONPREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YCBCRA_NONPREMUL:</span> <span class="pre">1090750600&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YCBCRA_NONPREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YCBCRK">
+<span class="sig-name descname"><span class="pre">YCBCRK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YCBCRK:</span> <span class="pre">1342408840&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YCBCRK" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YCOCG">
+<span class="sig-name descname"><span class="pre">YCOCG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YCOCG:</span> <span class="pre">1610745992&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YCOCG" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YCOCGA_NONPREMUL">
+<span class="sig-name descname"><span class="pre">YCOCGA_NONPREMUL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YCOCGA_NONPREMUL:</span> <span class="pre">1627621512&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YCOCGA_NONPREMUL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.YCOCGK">
+<span class="sig-name descname"><span class="pre">YCOCGK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.YCOCGK:</span> <span class="pre">1879279752&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.YCOCGK" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.Y_16BE">
+<span class="sig-name descname"><span class="pre">Y_16BE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.Y_16BE:</span> <span class="pre">537919499&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.Y_16BE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.Y_16LE">
+<span class="sig-name descname"><span class="pre">Y_16LE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PixelFormat.Y_16LE:</span> <span class="pre">536870923&gt;</span></em><a class="headerlink" href="#pywuffs.aux.PixelFormat.Y_16LE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pywuffs.aux.PixelFormat.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pywuffs.aux.PixelFormat.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#pywuffs.aux.PixelFormat.value" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
