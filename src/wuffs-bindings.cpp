@@ -217,7 +217,7 @@ PYBIND11_MODULE(pywuffs, m) {
                      &wuffs_aux_wrap::ImageDecoderConfig::enabled_decoders,
                      "list: list of ImageDecoderType.")
       .def_readwrite(
-          "output_pixel_format",
+          "pixel_format",
           &wuffs_aux_wrap::ImageDecoderConfig::pixel_format,
           "PixelFormat: Destination pixel format, default is "
           "PixelFormat.BGRA_PREMUL which is 4 bytes per pixel (8 "

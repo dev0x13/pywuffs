@@ -286,7 +286,7 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
   }
 
   ImageDecodingResult Decode(const std::string& path_to_file) {
-    FILE* f = fopen(path_to_file.c_str(), "r");
+    FILE* f = fopen(path_to_file.c_str(), "rb");
     wuffs_aux::sync_io::FileInput input(f);
     ImageDecodingResult result = DecodeInternal(input);
     fclose(f);
