@@ -1,6 +1,7 @@
 # pywuffs: Python bindings for Wuffs the Library
 
 [![Linux CI](https://github.com/dev0x13/pywuffs/actions/workflows/linux.yml/badge.svg)](https://github.com/dev0x13/pywuffs/actions/workflows/linux.yml)
+[![Windows CI](https://github.com/dev0x13/pywuffs/actions/workflows/windows.yml/badge.svg)](https://github.com/dev0x13/pywuffs/actions/workflows/windows.yml)
 
 This project is intended to enable using [Wuffs the Library](https://github.com/google/wuffs) from Python code. For now,
 it only provides bindings for image decoding part of
