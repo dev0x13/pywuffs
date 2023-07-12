@@ -30,7 +30,7 @@ ext_modules = [
     Pybind11Extension(
         "pywuffs",
         glob("src/*.cpp"),
-        include_dirs=["libs/wuffs/release"]
+        include_dirs=["libs/wuffs-mirror-release-c/release"]
     ),
 ]
 

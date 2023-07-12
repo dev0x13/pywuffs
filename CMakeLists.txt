@@ -19,4 +19,4 @@ endif()
 find_package(pybind11 REQUIRED)
 
 pybind11_add_module(pywuffs src/wuffs-bindings.cpp)
-target_include_directories(pywuffs PRIVATE libs/wuffs/release/)
+target_include_directories(pywuffs PRIVATE libs/wuffs-mirror-release-c/release/)
