@@ -4,7 +4,8 @@ from setuptools import setup
 from pybind11.setup_helpers import Pybind11Extension
 from setuptools.command.build_ext import build_ext
 
-UNIX_BUILD_ARGS = ["-O3", "-g0", "-s", "-fvisibility=hidden", "-flto", "-fno-fat-lto-objects"]
+UNIX_BUILD_ARGS = ["-O3", "-g0", "-s",
+                   "-fvisibility=hidden", "-flto", "-fno-fat-lto-objects"]
 BUILD_ARGS = defaultdict(lambda: UNIX_BUILD_ARGS)
 BUILD_ARGS["msvc"] = ["/O3", "/DNDEBUG", "/arch:AVX"]
 BUILD_ARGS["unix"] = UNIX_BUILD_ARGS

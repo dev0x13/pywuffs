@@ -1,5 +1,7 @@
 # pywuffs: Python bindings for Wuffs the Library
 
+[![Linux CI](https://github.com/dev0x13/pywuffs/actions/workflows/linux.yml/badge.svg)](https://github.com/dev0x13/pywuffs/actions/workflows/linux.yml)
+
 This project is intended to enable using [Wuffs the Library](https://github.com/google/wuffs) from Python code. For now,
 it only provides bindings for image decoding part of
 the [Auxiliary C++ API](https://github.com/google/wuffs/blob/main/doc/note/auxiliary-code.md) as being of the most
@@ -19,7 +21,7 @@ python3 -m pip install git+https://github.com/dev0x13/pywuffs.git
 
 ```bash
 python3 -m pip install -r requirements
-python3 setup.py install
+python3 -m pip install .
 ```
 
 ### Using CMake

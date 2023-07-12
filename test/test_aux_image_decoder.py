@@ -1,16 +1,18 @@
+import os
 import pytest
 from struct import unpack
 
 from pywuffs.aux import *
 from pywuffs import *
 
+IMAGES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/")
 TEST_IMAGES = [
-    (ImageDecoderType.PNG, "images/lena.png"),
-    (ImageDecoderType.BMP, "images/lena.bmp"),
-    (ImageDecoderType.TGA, "images/lena.tga"),
-    (ImageDecoderType.NIE, "images/hippopotamus.nie"),
-    (ImageDecoderType.GIF, "images/lena.gif"),
-    (ImageDecoderType.WBMP, "images/lena.wbmp")
+    (ImageDecoderType.PNG, IMAGES_PATH + "/lena.png"),
+    (ImageDecoderType.BMP, IMAGES_PATH + "/lena.bmp"),
+    (ImageDecoderType.TGA, IMAGES_PATH + "/lena.tga"),
+    (ImageDecoderType.NIE, IMAGES_PATH + "/hippopotamus.nie"),
+    (ImageDecoderType.GIF, IMAGES_PATH + "/lena.gif"),
+    (ImageDecoderType.WBMP, IMAGES_PATH + "/lena.wbmp")
 ]
 
 
@@ -28,7 +30,7 @@ def test_decode_image_with_metadata(param):
     config = ImageDecoderConfig()
     config.flags = param[0]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode("images/lena_exif.png")
+    decoding_result = decoder.decode(IMAGES_PATH + "/lena_exif.png")
     assert len(decoding_result.error_message) == 0
     assert len(decoding_result.reported_metadata) == param[1]
     assert len(decoding_result.decoded_data) != 0
@@ -145,7 +147,7 @@ def test_decode_image_invalid_kvp_chunk():
     config = ImageDecoderConfig()
     config.flags = [ImageDecoderFlags.REPORT_METADATA_KVP]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode("images/lena.png")
+    decoding_result = decoder.decode(IMAGES_PATH + "/lena.png")
     assert decoding_result.error_message == "png: bad text chunk (not Latin-1)"
     assert len(decoding_result.decoded_data) == 0
     assert len(decoding_result.reported_metadata) != 0
@@ -155,7 +157,7 @@ def test_decode_image_exif_metadata():
     config = ImageDecoderConfig()
     config.flags = [ImageDecoderFlags.REPORT_METADATA_EXIF]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode("images/lena_exif.png")
+    decoding_result = decoder.decode(IMAGES_PATH + "/lena_exif.png")
     assert len(decoding_result.error_message) == 0
     assert len(decoding_result.decoded_data) != 0
     assert len(decoding_result.reported_metadata) == 1
@@ -251,7 +253,7 @@ def test_decode_image_max_incl_metadata_length():
     config.max_incl_metadata_length = 8
     config.flags = [ImageDecoderFlags.REPORT_METADATA_EXIF]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode("images/lena_exif.png")
+    decoding_result = decoder.decode(IMAGES_PATH + "/lena_exif.png")
     assert decoding_result.error_message == ImageDecoderError.MaxInclMetadataLengthExceeded
     assert len(decoding_result.reported_metadata) == 0
     assert len(decoding_result.decoded_data) == 0
