@@ -5,3 +5,4 @@ dist/
 build/
 _build/
 pywuffs.egg-info/
+__pycache__/

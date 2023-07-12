@@ -287,6 +287,12 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
 
   ImageDecodingResult Decode(const std::string& path_to_file) {
     FILE* f = fopen(path_to_file.c_str(), "rb");
+    if (!f) {
+      ImageDecodingResult result;
+      result.error_message =
+          "wuffs_aux_wrap::ImageDecoder::Decode: failed to open file";
+      return result;
+    }
     wuffs_aux::sync_io::FileInput input(f);
     ImageDecodingResult result = DecodeInternal(input);
     fclose(f);

@@ -30,10 +30,13 @@ PYBIND11_MODULE(pywuffs, m) {
 
   py::module aux_m = m.def_submodule("aux", "Simplified \"auxiliary\" API.");
 
+  // clang-format off
   py::class_<wuffs_base__more_information>(
       m, "wuffs_base__more_information",
       "Holds additional fields. The flavor field follows the base38 namespace "
-      "convention. The other fields' semantics depends on the flavor.")
+      "convention (https://github.com/google/wuffs/blob/main/doc/note/base38-and-fourcc.md)."
+      "The other fields' semantics depends on the flavor.")
+      // clang-format on
       .def_readonly("flavor", &wuffs_base__more_information::flavor)
       .def_readonly("w", &wuffs_base__more_information::w)
       .def_readonly("x", &wuffs_base__more_information::x)
@@ -217,8 +220,7 @@ PYBIND11_MODULE(pywuffs, m) {
                      &wuffs_aux_wrap::ImageDecoderConfig::enabled_decoders,
                      "list: list of ImageDecoderType.")
       .def_readwrite(
-          "pixel_format",
-          &wuffs_aux_wrap::ImageDecoderConfig::pixel_format,
+          "pixel_format", &wuffs_aux_wrap::ImageDecoderConfig::pixel_format,
           "PixelFormat: Destination pixel format, default is "
           "PixelFormat.BGRA_PREMUL which is 4 bytes per pixel (8 "
           "bits per channel × 4 channels). Currently supported formats are:"
