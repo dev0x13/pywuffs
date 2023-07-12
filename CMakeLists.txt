@@ -16,7 +16,7 @@ elseif(MSVC)
     set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "/arch:AVX")
 endif()
 
-add_subdirectory(libs/pybind11)
+find_package(pybind11 REQUIRED)
 
 pybind11_add_module(pywuffs src/wuffs-bindings.cpp)
 target_include_directories(pywuffs PRIVATE libs/wuffs/release/)

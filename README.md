@@ -24,6 +24,16 @@ python3 setup.py install
 
 ### Using CMake
 
+CMake build support is mostly intended for development purposes, so the process might be
+not so smooth.
+
+Building the Python module using CMake requires `pybind11` library to be installed in the
+system, for example in Ubuntu it can be installed like this:
+
+```bash
+sudo apt install pybind11-dev
+```
+
 #### Linux
 
 ```bash
