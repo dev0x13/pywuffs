@@ -20,7 +20,7 @@ PYBIND11_MODULE(pywuffs, m) {
   py::class_<wuffs_base__more_information>(
       m, "wuffs_base__more_information",
       "Holds additional fields. The flavor field follows the base38 namespace "
-      "convention (https://github.com/google/wuffs/blob/main/doc/note/base38-and-fourcc.md)."
+      "convention (https://github.com/google/wuffs/blob/main/doc/note/base38-and-fourcc.md). "
       "The other fields' semantics depends on the flavor.")
       // clang-format on
       .def_readonly("flavor", &wuffs_base__more_information::flavor)
@@ -234,12 +234,12 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
       .def_readwrite(
           "max_incl_dimension",
           &wuffs_aux_wrap::ImageDecoderConfig::max_incl_dimension,
-          "int: Decoding fails (with DecodeImage_MaxInclDimensionExceeded) if "
+          "int: Decoding fails (with ImageDecoderErrors.MaxInclDimensionExceeded) if "
           "the image's width or height is greater than max_incl_dimension.")
       .def_readwrite(
           "max_incl_metadata_length",
           &wuffs_aux_wrap::ImageDecoderConfig::max_incl_metadata_length,
-          "int: Decoding fails (with DecodeImage_MaxInclDimensionExceeded) if "
+          "int: Decoding fails (with ImageDecoderErrors.MaxInclDimensionExceeded) if "
           "any opted-in (via flags bits) metadata is longer than "
           "max_incl_metadata_length.")
       .def_readwrite("enabled_decoders",
@@ -309,12 +309,11 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
                     "W, C] shape).")
       .def_readonly("pixcfg", &wuffs_aux_wrap::ImageDecodingResult::pixcfg,
                     "wuffs_base__pixel_config: decoded pixel buffer config.")
-      .def_readonly(
-          "reported_metadata",
-          &wuffs_aux_wrap::ImageDecodingResult::reported_metadata,
-          "VectorMetadataEntry: a list-like object containing reported data "
-          "(only filled is any metadata was decoded and the "
-          "corresponding ImageDecoderFlag flag was set).")
+      .def_readonly("reported_metadata",
+                    &wuffs_aux_wrap::ImageDecodingResult::reported_metadata,
+                    "list: a list object containing reported data "
+                    "(only filled if any metadata was decoded and the "
+                    "corresponding ImageDecoderFlag flag was set).")
       .def_readonly("error_message",
                     &wuffs_aux_wrap::ImageDecodingResult::error_message,
                     "str: error message, empty on success, one of "

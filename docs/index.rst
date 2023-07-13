@@ -1,5 +1,5 @@
-pywuffs module
-==============
+pywuffs: Python bindings for Wuffs the Library
+==============================================
 
 .. automodule:: pywuffs
    :members:

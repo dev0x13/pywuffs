@@ -1,2 +1,3 @@
 sphinx_epytext
 sphinx_rtd_theme
+pywuffs

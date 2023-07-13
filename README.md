@@ -16,7 +16,7 @@ Current version of Wuffs library used in this project is **0.3.3**.
 ### Using pip
 
 ```bash
-python3 -m pip install git+https://github.com/dev0x13/pywuffs.git
+python3 -m pip install pywuffs
 ```
 
 ### Using CMake
