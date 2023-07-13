@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
-  pull_request:
+      - master
 
 jobs:
   build-and-test:

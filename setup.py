@@ -9,7 +9,7 @@ BUILD_ARGS = defaultdict(lambda: UNIX_BUILD_ARGS)
 BUILD_ARGS["msvc"] = ["/O3", "/DNDEBUG", "/arch:AVX"]
 BUILD_ARGS["unix"] = UNIX_BUILD_ARGS
 
-UNIX_LINK_ARGS = ["-Wl,--strip-all", "-flto", "-fno-fat-lto-objects"]
+UNIX_LINK_ARGS = ["-flto", "-fno-fat-lto-objects"]
 GCC_STRIP_FLAG = "-Wl,--strip-all"
 LINK_ARGS = defaultdict(lambda: UNIX_LINK_ARGS)
 LINK_ARGS["msvc"] = []
@@ -24,7 +24,7 @@ class CustomBuildExt(build_ext):
         for ext in self.extensions:
             ext.extra_link_args = link_args
             ext.extra_compile_args = build_args
-            if self.compiler.compiler[0].endswith("gcc"):
+            if hasattr(self.compiler, "compiler") and self.compiler.compiler[0].endswith("gcc"):
                 ext.extra_link_args.append(GCC_STRIP_FLAG)
         build_ext.build_extensions(self)
 
