@@ -38,7 +38,7 @@ ext_modules = [
 ]
 
 setup(name="pywuffs",
-      version="1.0",
+      version="1.0.0",
       description="Python bindings for Wuffs the Library",
       author="Georgiy Manuilov",
       url="https://github.com/dev0x13/pywuffs",
