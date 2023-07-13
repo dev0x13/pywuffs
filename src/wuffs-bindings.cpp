@@ -2,7 +2,6 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include <pybind11/stl_bind.h>
 
 #include <c/wuffs-v0.3.c>
 
@@ -10,25 +9,12 @@
 
 namespace py = pybind11;
 
-PYBIND11_MAKE_OPAQUE(std::vector<uint8_t>);
-
 PYBIND11_MODULE(pywuffs, m) {
   m.doc() = "Python bindings for Wuffs the Library.";
 
-  // This prevents input/output buffers from copying
-  py::bind_vector<std::vector<uint8_t>>(
-      m, "VectorUint8", py::buffer_protocol(),
-      "Auxiliary class for zero-copy data transfers between Python and C++. "
-      "Exposes append, clear, extend, insert, pop, and some iterator methods. "
-      "Implements buffer protocol, so it can be used with memoryview.");
-  py::bind_vector<std::vector<wuffs_aux_wrap::MetadataEntry>>(
-      m, "VectorMetadataEntry",
-      "Auxiliary list-like class holding instances of MetadataEntry for "
-      "zero-copy data transfers between Python and C++. "
-      "Exposes append, clear, extend, insert, pop, and some iterator "
-      "methods.");
-
-  py::module aux_m = m.def_submodule("aux", "Simplified \"auxiliary\" API.");
+  /*
+   * Base Wuffs API
+   */
 
   // clang-format off
   py::class_<wuffs_base__more_information>(
@@ -54,12 +40,125 @@ PYBIND11_MODULE(pywuffs, m) {
       .def("metadata_parsed__srgb",
            &wuffs_base__more_information::metadata_parsed__srgb);
 
-  py::class_<wuffs_aux_wrap::MetadataEntry>(aux_m, "MetadataEntry",
-                                            "Holds parsed metadata piece.")
-      .def_readonly("minfo", &wuffs_aux_wrap::MetadataEntry::minfo,
-                    "wuffs_base__more_information: Info on parsed metadata.")
-      .def_readonly("data", &wuffs_aux_wrap::MetadataEntry::data,
-                    "VectorUint8: Parsed metadata.");
+  py::class_<wuffs_base__pixel_config>(
+      m, "wuffs_base__pixel_config",
+      "Holds information about decoded pixel buffer.")
+      .def("is_valid", &wuffs_base__pixel_config::is_valid)
+      .def("pixel_format",
+           [](wuffs_base__pixel_config& self) -> wuffs_aux_wrap::PixelFormat {
+             return static_cast<wuffs_aux_wrap::PixelFormat>(
+                 self.pixel_format().repr);
+           })
+      .def("pixel_subsampling",
+           [](wuffs_base__pixel_config& self)
+               -> wuffs_aux_wrap::PixelSubsampling {
+             return static_cast<wuffs_aux_wrap::PixelSubsampling>(
+                 self.pixel_subsampling().repr);
+           })
+      .def("width", &wuffs_base__pixel_config::width)
+      .def("height", &wuffs_base__pixel_config::height)
+      .def("pixbuf_len", &wuffs_base__pixel_config::pixbuf_len);
+
+  py::enum_<wuffs_aux_wrap::ImageDecoderQuirks>(
+      m, "ImageDecoderQuirks",
+      "See https://github.com/google/wuffs/blob/main/doc/note/quirks.md.")
+      .value("IGNORE_CHECKSUM",
+             wuffs_aux_wrap::ImageDecoderQuirks::IGNORE_CHECKSUM,
+             "Favor faster decodes over rejecting invalid checksums.")
+      .value("GIF_DELAY_NUM_DECODED_FRAMES",
+             wuffs_aux_wrap::ImageDecoderQuirks::GIF_DELAY_NUM_DECODED_FRAMES)
+      .value("GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND",
+             wuffs_aux_wrap::ImageDecoderQuirks::
+                 GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND)
+      .value(
+          "GIF_QUIRK_HONOR_BACKGROUND_COLOR",
+          wuffs_aux_wrap::ImageDecoderQuirks::GIF_QUIRK_HONOR_BACKGROUND_COLOR)
+      .value("GIF_IGNORE_TOO_MUCH_PIXEL_DATA",
+             wuffs_aux_wrap::ImageDecoderQuirks::GIF_IGNORE_TOO_MUCH_PIXEL_DATA)
+      .value("GIF_IMAGE_BOUNDS_ARE_STRICT",
+             wuffs_aux_wrap::ImageDecoderQuirks::GIF_IMAGE_BOUNDS_ARE_STRICT)
+      .value("GIF_REJECT_EMPTY_FRAME",
+             wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_FRAME)
+      .value("GIF_REJECT_EMPTY_PALETTE",
+             wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_PALETTE);
+
+  py::enum_<wuffs_aux_wrap::ImageDecoderType>(m, "ImageDecoderType")
+      .value("BMP", wuffs_aux_wrap::ImageDecoderType::BMP)
+      .value("GIF", wuffs_aux_wrap::ImageDecoderType::GIF)
+      .value("NIE", wuffs_aux_wrap::ImageDecoderType::NIE)
+      .value("PNG", wuffs_aux_wrap::ImageDecoderType::PNG)
+      .value("TGA", wuffs_aux_wrap::ImageDecoderType::TGA)
+      .value("WBMP", wuffs_aux_wrap::ImageDecoderType::WBMP)
+      .value("JPEG", wuffs_aux_wrap::ImageDecoderType::JPEG);
+
+  // clang-format off
+#define PYPF(pf) .value(#pf, wuffs_aux_wrap::PixelFormat::pf)
+py::enum_<wuffs_aux_wrap::PixelFormat>(
+    m, "PixelFormat", "Common 8-bit-depth pixel formats. This list is not "
+    "exhaustive; not all valid wuffs_base__pixel_format values are present.")
+    PYPF(A)
+    PYPF(Y)
+    PYPF(Y_16LE)
+    PYPF(Y_16BE)
+    PYPF(YA_NONPREMUL)
+    PYPF(YA_PREMUL)
+    PYPF(YCBCR)
+    PYPF(YCBCRA_NONPREMUL)
+    PYPF(YCBCRK)
+    PYPF(YCOCG)
+    PYPF(YCOCGA_NONPREMUL)
+    PYPF(YCOCGK)
+    PYPF(INDEXED__BGRA_NONPREMUL)
+    PYPF(INDEXED__BGRA_PREMUL)
+    PYPF(INDEXED__BGRA_BINARY)
+    PYPF(BGR_565)
+    PYPF(BGR)
+    PYPF(BGRA_NONPREMUL)
+    PYPF(BGRA_NONPREMUL_4X16LE)
+    PYPF(BGRA_PREMUL)
+    PYPF(BGRA_PREMUL_4X16LE)
+    PYPF(BGRA_BINARY)
+    PYPF(BGRX)
+    PYPF(RGB)
+    PYPF(RGBA_NONPREMUL)
+    PYPF(RGBA_NONPREMUL_4X16LE)
+    PYPF(RGBA_PREMUL)
+    PYPF(RGBA_PREMUL_4X16LE)
+    PYPF(RGBA_BINARY)
+    PYPF(RGBX)
+    PYPF(CMY)
+    PYPF(CMYK);
+#undef PYPF
+  // clang-format on
+
+  py::enum_<wuffs_aux_wrap::PixelBlend>(
+      m, "PixelBlend",
+      "Encodes how to blend source and destination pixels, accounting for "
+      "transparency. It encompasses the Porter-Duff compositing operators as "
+      "well as the other blending modes defined by PDF.")
+      .value("SRC", wuffs_aux_wrap::PixelBlend::SRC)
+      .value("SRC_OVER", wuffs_aux_wrap::PixelBlend::SRC_OVER);
+
+  py::enum_<wuffs_aux_wrap::PixelSubsampling>(
+      m, "PixelSubsampling",
+      "wuffs_base__pixel_subsampling encodes whether sample values cover one "
+      "pixel or cover multiple pixels.\n"
+      "See "
+      "https://github.com/google/wuffs/blob/main/doc/note/"
+      "pixel-subsampling.md\n")
+      .value("NONE", wuffs_aux_wrap::PixelSubsampling::NONE)
+      .value("K444", wuffs_aux_wrap::PixelSubsampling::K444)
+      .value("K440", wuffs_aux_wrap::PixelSubsampling::K440)
+      .value("K422", wuffs_aux_wrap::PixelSubsampling::K422)
+      .value("K420", wuffs_aux_wrap::PixelSubsampling::K420)
+      .value("K411", wuffs_aux_wrap::PixelSubsampling::K411)
+      .value("K410", wuffs_aux_wrap::PixelSubsampling::K410);
+
+  /*
+   * Aux Wuffs API
+   */
+
+  py::module aux_m = m.def_submodule("aux", "Simplified \"auxiliary\" API.");
 
   py::enum_<wuffs_aux_wrap::ImageDecoderFlags>(
       aux_m, "ImageDecoderFlags",
@@ -100,85 +199,12 @@ PYBIND11_MODULE(pywuffs, m) {
              wuffs_aux_wrap::ImageDecoderFlags::REPORT_METADATA_XMP,
              "Extensible Metadata Platform.");
 
-  py::enum_<wuffs_aux_wrap::ImageDecoderQuirks>(
-      aux_m, "ImageDecoderQuirks",
-      "See https://github.com/google/wuffs/blob/main/doc/note/quirks.md.")
-      .value("IGNORE_CHECKSUM",
-             wuffs_aux_wrap::ImageDecoderQuirks::IGNORE_CHECKSUM,
-             "Favor faster decodes over rejecting invalid checksums.")
-      .value("GIF_DELAY_NUM_DECODED_FRAMES",
-             wuffs_aux_wrap::ImageDecoderQuirks::GIF_DELAY_NUM_DECODED_FRAMES)
-      .value("GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND",
-             wuffs_aux_wrap::ImageDecoderQuirks::
-                 GIF_FIRST_FRAME_LOCAL_PALETTE_MEANS_BLACK_BACKGROUND)
-      .value(
-          "GIF_QUIRK_HONOR_BACKGROUND_COLOR",
-          wuffs_aux_wrap::ImageDecoderQuirks::GIF_QUIRK_HONOR_BACKGROUND_COLOR)
-      .value("GIF_IGNORE_TOO_MUCH_PIXEL_DATA",
-             wuffs_aux_wrap::ImageDecoderQuirks::GIF_IGNORE_TOO_MUCH_PIXEL_DATA)
-      .value("GIF_IMAGE_BOUNDS_ARE_STRICT",
-             wuffs_aux_wrap::ImageDecoderQuirks::GIF_IMAGE_BOUNDS_ARE_STRICT)
-      .value("GIF_REJECT_EMPTY_FRAME",
-             wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_FRAME)
-      .value("GIF_REJECT_EMPTY_PALETTE",
-             wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_PALETTE);
-
-  py::enum_<wuffs_aux_wrap::ImageDecoderType>(aux_m, "ImageDecoderType")
-      .value("BMP", wuffs_aux_wrap::ImageDecoderType::BMP)
-      .value("GIF", wuffs_aux_wrap::ImageDecoderType::GIF)
-      .value("NIE", wuffs_aux_wrap::ImageDecoderType::NIE)
-      .value("PNG", wuffs_aux_wrap::ImageDecoderType::PNG)
-      .value("TGA", wuffs_aux_wrap::ImageDecoderType::TGA)
-      .value("WBMP", wuffs_aux_wrap::ImageDecoderType::WBMP)
-      .value("JPEG", wuffs_aux_wrap::ImageDecoderType::JPEG);
-
-  // clang-format off
-#define PYPF(pf) .value(#pf, wuffs_aux_wrap::PixelFormat::pf)
-  py::enum_<wuffs_aux_wrap::PixelFormat>(
-      aux_m, "PixelFormat", "Common 8-bit-depth pixel formats. This list is not "
-      "exhaustive; not all valid wuffs_base__pixel_format values are present.")
-      PYPF(A)
-      PYPF(Y)
-      PYPF(Y_16LE)
-      PYPF(Y_16BE)
-      PYPF(YA_NONPREMUL)
-      PYPF(YA_PREMUL)
-      PYPF(YCBCR)
-      PYPF(YCBCRA_NONPREMUL)
-      PYPF(YCBCRK)
-      PYPF(YCOCG)
-      PYPF(YCOCGA_NONPREMUL)
-      PYPF(YCOCGK)
-      PYPF(INDEXED__BGRA_NONPREMUL)
-      PYPF(INDEXED__BGRA_PREMUL)
-      PYPF(INDEXED__BGRA_BINARY)
-      PYPF(BGR_565)
-      PYPF(BGR)
-      PYPF(BGRA_NONPREMUL)
-      PYPF(BGRA_NONPREMUL_4X16LE)
-      PYPF(BGRA_PREMUL)
-      PYPF(BGRA_PREMUL_4X16LE)
-      PYPF(BGRA_BINARY)
-      PYPF(BGRX)
-      PYPF(RGB)
-      PYPF(RGBA_NONPREMUL)
-      PYPF(RGBA_NONPREMUL_4X16LE)
-      PYPF(RGBA_PREMUL)
-      PYPF(RGBA_PREMUL_4X16LE)
-      PYPF(RGBA_BINARY)
-      PYPF(RGBX)
-      PYPF(CMY)
-      PYPF(CMYK);
-#undef PYPF
-  // clang-format on
-
-  py::enum_<wuffs_aux_wrap::PixelBlend>(
-      aux_m, "PixelBlend",
-      "Encodes how to blend source and destination pixels, accounting for "
-      "transparency. It encompasses the Porter-Duff compositing operators as "
-      "well as the other blending modes defined by PDF.")
-      .value("SRC", wuffs_aux_wrap::PixelBlend::SRC)
-      .value("SRC_OVER", wuffs_aux_wrap::PixelBlend::SRC_OVER);
+  py::class_<wuffs_aux_wrap::MetadataEntry>(aux_m, "MetadataEntry",
+                                            "Holds parsed metadata piece.")
+      .def_readonly("minfo", &wuffs_aux_wrap::MetadataEntry::minfo,
+                    "wuffs_base__more_information: Info on parsed metadata.")
+      .def_readonly("data", &wuffs_aux_wrap::MetadataEntry::data,
+                    "np.array: Parsed metadata (1D uint8 Numpy array).");
 
   py::class_<wuffs_aux_wrap::ImageDecoderConfig>(aux_m, "ImageDecoderConfig",
                                                  "Image decoder configuration.")
@@ -261,23 +287,28 @@ PYBIND11_MODULE(pywuffs, m) {
           &wuffs_aux_wrap::ImageDecoderError::UnsupportedPixelConfiguration)
       .def_readonly_static(
           "UnsupportedPixelFormat",
-          &wuffs_aux_wrap::ImageDecoderError::UnsupportedPixelFormat);
+          &wuffs_aux_wrap::ImageDecoderError::UnsupportedPixelFormat)
+      .def_readonly_static(
+          "FailedToOpenFile",
+          &wuffs_aux_wrap::ImageDecoderError::FailedToOpenFile);
 
   py::class_<wuffs_aux_wrap::ImageDecodingResult>(
       aux_m, "ImageDecodingResult",
       "Image decoding result. The fields depend on whether decoding "
       "succeeded:\n"
-      " - On total success, the error_message is empty and decoded_data is not "
+      " - On total success, the error_message is empty and pixbuf is not "
       "empty.\n"
       " - On partial success (e.g. the input file was truncated but we are "
       "still able to decode some of the pixels), error_message is non-empty "
-      "but decoded_data is not empty. It is up to the caller whether to accept "
+      "but pixbuf is not empty. It is up to the caller whether to accept "
       "or reject partial success.\n"
-      " - On failure, the error_message is non-empty and decoded_data is "
+      " - On failure, the error_message is non-empty and pixbuf is "
       "empty.")
-      .def_readonly("decoded_data",
-                    &wuffs_aux_wrap::ImageDecodingResult::decoded_data,
-                    "VectorUint8: a byte buffer containing decoded data.")
+      .def_readonly("pixbuf", &wuffs_aux_wrap::ImageDecodingResult::pixbuf,
+                    "np.array: decoded pixel buffer (uint8 Numpy array of [H, "
+                    "W, C] shape).")
+      .def_readonly("pixcfg", &wuffs_aux_wrap::ImageDecodingResult::pixcfg,
+                    "wuffs_base__pixel_config: decoded pixel buffer config.")
       .def_readonly(
           "reported_metadata",
           &wuffs_aux_wrap::ImageDecodingResult::reported_metadata,

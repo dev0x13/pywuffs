@@ -1,9 +1,8 @@
+from pywuffs import ImageDecoderType, PixelFormat
 from pywuffs.aux import (
     ImageDecoder,
     ImageDecoderConfig,
-    ImageDecoderType,
-    ImageDecoderFlags,
-    PixelFormat
+    ImageDecoderFlags
 )
 
 config = ImageDecoderConfig()
@@ -15,4 +14,5 @@ decoder = ImageDecoder(config)
 
 decoding_result = decoder.decode("lena.png")
 
-print(bytes(memoryview(decoding_result.decoded_data)))
+print(decoding_result.pixbuf.shape)
+print(decoding_result.pixbuf)

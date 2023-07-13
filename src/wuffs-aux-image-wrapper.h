@@ -1,5 +1,8 @@
 #pragma once
 
+#include <pybind11/numpy.h>
+
+#include <c/wuffs-v0.3.c>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -97,6 +100,18 @@ enum class PixelBlend : uint32_t {
   SRC_OVER = WUFFS_BASE__PIXEL_BLEND__SRC_OVER
 };
 
+enum class PixelSubsampling : uint32_t {
+  NONE = WUFFS_BASE__PIXEL_SUBSAMPLING__NONE,
+#define PSE(ps) K##ps = WUFFS_BASE__PIXEL_SUBSAMPLING__##ps
+  PSE(444),
+  PSE(440),
+  PSE(422),
+  PSE(420),
+  PSE(411),
+  PSE(410)
+#undef PFE
+};
+
 // This struct hosts wuffs_aux::DecodeImage arguments in more user- and
 // Python- friendly fashion
 struct ImageDecoderConfig {
@@ -122,10 +137,10 @@ struct ImageDecoderConfig {
 // input
 struct MetadataEntry {
   wuffs_base__more_information minfo{};
-  std::vector<uint8_t> data;
+  pybind11::array_t<uint8_t> data;
 
   MetadataEntry(const wuffs_base__more_information& minfo,
-                std::vector<uint8_t>&& data)
+                pybind11::array_t<uint8_t>&& data)
       : minfo(minfo), data(std::move(data)) {}
 
   MetadataEntry() : minfo(wuffs_base__empty_more_information()) {}
@@ -143,33 +158,37 @@ struct MetadataEntry {
     return *this;
   }
 
-  MetadataEntry(const wuffs_aux_wrap::MetadataEntry& other) = default;
-
-  MetadataEntry& operator=(const wuffs_aux_wrap::MetadataEntry& other) =
-      default;
+  MetadataEntry(const wuffs_aux_wrap::MetadataEntry& other) = delete;
+  MetadataEntry& operator=(const wuffs_aux_wrap::MetadataEntry& other) = delete;
 };
 
 struct ImageDecodingResult {
-  std::vector<uint8_t> decoded_data;
+  wuffs_base__pixel_config pixcfg = wuffs_base__null_pixel_config();
+  pybind11::array_t<uint8_t> pixbuf;
   std::vector<MetadataEntry> reported_metadata;
   std::string error_message;
 
   ImageDecodingResult() = default;
 
   ImageDecodingResult(ImageDecodingResult&& other) noexcept {
-    std::swap(decoded_data, other.decoded_data);
+    std::swap(pixcfg, other.pixcfg);
+    std::swap(pixbuf, other.pixbuf);
     std::swap(reported_metadata, other.reported_metadata);
     std::swap(error_message, other.error_message);
   }
 
   ImageDecodingResult& operator=(ImageDecodingResult&& other) noexcept {
     if (this != &other) {
-      std::swap(decoded_data, other.decoded_data);
+      std::swap(pixcfg, other.pixcfg);
+      std::swap(pixbuf, other.pixbuf);
       std::swap(reported_metadata, other.reported_metadata);
       std::swap(error_message, other.error_message);
     }
     return *this;
   }
+
+  ImageDecodingResult(ImageDecodingResult& other) = delete;
+  ImageDecodingResult& operator=(ImageDecodingResult& other) = delete;
 };
 
 struct ImageDecoderError {
@@ -182,6 +201,7 @@ struct ImageDecoderError {
   static const std::string UnsupportedPixelBlend;
   static const std::string UnsupportedPixelConfiguration;
   static const std::string UnsupportedPixelFormat;
+  static const std::string FailedToOpenFile;
 };
 
 const std::string ImageDecoderError::MaxInclDimensionExceeded =
@@ -202,8 +222,10 @@ const std::string ImageDecoderError::UnsupportedPixelConfiguration =
     wuffs_aux::DecodeImage_UnsupportedPixelConfiguration;
 const std::string ImageDecoderError::UnsupportedPixelFormat =
     wuffs_aux::DecodeImage_UnsupportedPixelFormat;
+const std::string ImageDecoderError::FailedToOpenFile =
+    "wuffs_aux_wrap::ImageDecoder::Decode: failed to open file";
 
-class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
+    class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
  public:
   explicit ImageDecoder(const ImageDecoderConfig& config)
       : quirks_vector_({config.quirks.begin(), config.quirks.end()}),
@@ -238,8 +260,8 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
 
   std::string HandleMetadata(const wuffs_base__more_information& minfo,
                              wuffs_base__slice_u8 raw) override {
-    decoding_result_.reported_metadata.push_back(
-        {minfo, {raw.ptr, raw.ptr + raw.len}});
+    decoding_result_.reported_metadata.emplace_back(
+        minfo, pybind11::array(pybind11::dtype("uint8"), {raw.len}, raw.ptr));
     return "";
   }
 
@@ -261,18 +283,18 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
     if (len == 0 || SIZE_MAX < len) {
       return {wuffs_aux::DecodeImage_UnsupportedPixelConfiguration};
     }
-    if (allow_uninitialized_memory) {
-      decoding_result_.decoded_data.resize(len);
-    } else {
-      decoding_result_.decoded_data.resize(len, 0);
+    decoding_result_.pixbuf.resize({len});
+    if (!allow_uninitialized_memory) {
+      std::memset(decoding_result_.pixbuf.mutable_data(), 0,
+                  decoding_result_.pixbuf.size());
     }
     wuffs_base__pixel_buffer pixbuf;
     wuffs_base__status status = pixbuf.set_from_slice(
         &image_config.pixcfg,
-        wuffs_base__make_slice_u8(decoding_result_.decoded_data.data(),
-                                  decoding_result_.decoded_data.size()));
+        wuffs_base__make_slice_u8(decoding_result_.pixbuf.mutable_data(),
+                                  decoding_result_.pixbuf.size()));
     if (!status.is_ok()) {
-      decoding_result_.decoded_data.clear();
+      decoding_result_.pixbuf = {};
       return {status.message()};
     }
     return {wuffs_aux::MemOwner(nullptr, &free), pixbuf};
@@ -289,8 +311,7 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
     FILE* f = fopen(path_to_file.c_str(), "rb");
     if (!f) {
       ImageDecodingResult result;
-      result.error_message =
-          "wuffs_aux_wrap::ImageDecoder::Decode: failed to open file";
+      result.error_message = ImageDecoderError::FailedToOpenFile;
       return result;
     }
     wuffs_aux::sync_io::FileInput input(f);
@@ -315,7 +336,16 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
     decoding_result_.error_message =
         std::move(decode_image_result.error_message);
     if (!decode_image_result.pixbuf.pixcfg.is_valid()) {
-      decoding_result_.decoded_data.clear();
+      decoding_result_.pixbuf = {};
+      decoding_result_.pixcfg = wuffs_base__null_pixel_config();
+    } else {
+      decoding_result_.pixcfg = decode_image_result.pixbuf.pixcfg;
+      decoding_result_.pixbuf =
+          decoding_result_.pixbuf.reshape(std::vector<size_t>{
+              decoding_result_.pixcfg.height(), decoding_result_.pixcfg.width(),
+              decoding_result_.pixcfg.pixbuf_len() /
+                  (decoding_result_.pixcfg.width() *
+                   decoding_result_.pixcfg.height())});
     }
     return std::move(decoding_result_);
   }
