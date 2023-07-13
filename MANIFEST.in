@@ -1,0 +1,2 @@
+include src/wuffs-aux-image-wrapper.h libs/wuffs-mirror-release-c/release/c/wuffs-v0.3.c
+

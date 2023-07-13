@@ -43,8 +43,4 @@ setup(name="pywuffs",
       author="Georgiy Manuilov",
       url="https://github.com/dev0x13/pywuffs",
       cmdclass={"build_ext": CustomBuildExt},
-      ext_modules=ext_modules,
-      headers=[
-          "src/wuffs-aux-image-wrapper.h",
-          "libs/wuffs-mirror-release-c/release/c/wuffs-v0.3.c"]
-      )
+      ext_modules=ext_modules)
