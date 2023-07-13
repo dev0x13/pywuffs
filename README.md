@@ -55,7 +55,7 @@ cmake --build .
 
 ## API reference
 
-API documentation is available at https://dev0x13.github.io/pywuffs. 
+API documentation is available at https://pywuffs.readthedocs.io. 
 
 ## Implementation goals
 
