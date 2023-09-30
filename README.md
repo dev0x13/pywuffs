@@ -61,5 +61,5 @@ API documentation is available at https://pywuffs.readthedocs.io.
 
 ## Roadmap
 
-2. Bindings for other parts of `wuffs_aux` API (JSON, CBOR decoding).
-3. Bindings for the C API of Wuffs the Library.
+1. Bindings for other parts of `wuffs_aux` API (JSON, CBOR decoding).
+2. Bindings for the C API of Wuffs the Library.
