@@ -3,6 +3,7 @@
 [![Linux CI](https://github.com/dev0x13/pywuffs/actions/workflows/linux.yml/badge.svg)](https://github.com/dev0x13/pywuffs/actions/workflows/linux.yml)
 [![Windows CI](https://github.com/dev0x13/pywuffs/actions/workflows/windows.yml/badge.svg)](https://github.com/dev0x13/pywuffs/actions/workflows/windows.yml)
 [![macOS CI](https://github.com/dev0x13/pywuffs/actions/workflows/macos.yml/badge.svg)](https://github.com/dev0x13/pywuffs/actions/workflows/macos.yml)
+[![Downloads](https://static.pepy.tech/badge/pywuffs)](https://pepy.tech/project/pywuffs)
 
 This project is intended to enable using [Wuffs the Library](https://github.com/google/wuffs) from Python code. For now,
 it only provides bindings for image decoding part of
@@ -60,6 +61,5 @@ API documentation is available at https://pywuffs.readthedocs.io.
 
 ## Roadmap
 
-1. Wheel installation through PyPI.
 2. Bindings for other parts of `wuffs_aux` API (JSON, CBOR decoding).
 3. Bindings for the C API of Wuffs the Library.
