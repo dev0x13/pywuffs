@@ -6,7 +6,7 @@
 [![Downloads](https://static.pepy.tech/badge/pywuffs)](https://pepy.tech/project/pywuffs)
 
 This project is intended to enable using [Wuffs the Library](https://github.com/google/wuffs) from Python code. For now,
-it only provides bindings for image decoding part of
+it only provides bindings for image and JSON decoding parts of
 the [Auxiliary C++ API](https://github.com/google/wuffs/blob/main/doc/note/auxiliary-code.md) as being of the most
 interest since it provides for "ridiculously fast" decoding of images of some types.
 
@@ -61,5 +61,5 @@ API documentation is available at https://pywuffs.readthedocs.io.
 
 ## Roadmap
 
-1. Bindings for other parts of `wuffs_aux` API (JSON, CBOR decoding).
+1. Bindings for other parts of `wuffs_aux` API (CBOR decoding).
 2. Bindings for the C API of Wuffs the Library.

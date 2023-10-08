@@ -6,6 +6,7 @@
 #include <c/wuffs-v0.3.c>
 
 #include "wuffs-aux-image-wrapper.h"
+#include "wuffs-aux-json-wrapper.h"
 
 namespace py = pybind11;
 
@@ -155,7 +156,7 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
       .value("K410", wuffs_aux_wrap::PixelSubsampling::K410);
 
   /*
-   * Aux Wuffs API
+   * Aux Wuffs API (DecodeImage)
    */
 
   py::module aux_m = m.def_submodule("aux", "Simplified \"auxiliary\" API.");
@@ -234,12 +235,14 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
       .def_readwrite(
           "max_incl_dimension",
           &wuffs_aux_wrap::ImageDecoderConfig::max_incl_dimension,
-          "int: Decoding fails (with ImageDecoderErrors.MaxInclDimensionExceeded) if "
+          "int: Decoding fails (with "
+          "ImageDecoderErrors.MaxInclDimensionExceeded) if "
           "the image's width or height is greater than max_incl_dimension.")
       .def_readwrite(
           "max_incl_metadata_length",
           &wuffs_aux_wrap::ImageDecoderConfig::max_incl_metadata_length,
-          "int: Decoding fails (with ImageDecoderErrors.MaxInclDimensionExceeded) if "
+          "int: Decoding fails (with "
+          "ImageDecoderErrors.MaxInclDimensionExceeded) if "
           "any opted-in (via flags bits) metadata is longer than "
           "max_incl_metadata_length.")
       .def_readwrite("enabled_decoders",
@@ -350,4 +353,118 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
           "\n path_to_file (str): path to an image file."
           "\nReturns:"
           "\n ImageDecodingResult: image decoding result.");
+
+  /*
+   * Aux Wuffs API (DecodeJson)
+   */
+
+  py::enum_<wuffs_aux_wrap::JsonDecoderQuirks>(
+      m, "JsonDecoderQuirks",
+      "See "
+      "https://github.com/google/wuffs/blob/main/std/json/decode_quirks.wuffs.")
+  // clang-format off
+#define JDQE(quirk) .value(#quirk, wuffs_aux_wrap::JsonDecoderQuirks::quirk)
+      JDQE(ALLOW_ASCII_CONTROL_CODES)
+      JDQE(ALLOW_BACKSLASH_A)
+      JDQE(ALLOW_BACKSLASH_CAPITAL_U)
+      JDQE(ALLOW_BACKSLASH_E)
+      JDQE(ALLOW_BACKSLASH_NEW_LINE)
+      JDQE(ALLOW_BACKSLASH_QUESTION_MARK)
+      JDQE(ALLOW_BACKSLASH_SINGLE_QUOTE)
+      JDQE(ALLOW_BACKSLASH_V)
+      JDQE(ALLOW_BACKSLASH_X_AS_CODE_POINTS)
+      JDQE(ALLOW_BACKSLASH_ZERO)
+      JDQE(ALLOW_COMMENT_BLOCK)
+      JDQE(ALLOW_COMMENT_LINE)
+      JDQE(ALLOW_EXTRA_COMMA)
+      JDQE(ALLOW_INF_NAN_NUMBERS)
+      JDQE(ALLOW_LEADING_ASCII_RECORD_SEPARATOR)
+      JDQE(ALLOW_LEADING_UNICODE_BYTE_ORDER_MARK)
+      JDQE(ALLOW_TRAILING_FILLER)
+      JDQE(EXPECT_TRAILING_NEW_LINE_OR_EOF)
+      JDQE(JSON_POINTER_ALLOW_TILDE_N_TILDE_R_TILDE_T)
+      JDQE(REPLACE_INVALID_UNICODE)
+#undef JDQE
+      // clang-format on
+      ;
+
+  py::class_<wuffs_aux_wrap::JsonDecoderConfig>(aux_m, "JsonDecoderConfig",
+                                                "JSON decoder configuration.")
+      .def(py::init<>())
+      .def_readwrite("quirks", &wuffs_aux_wrap::JsonDecoderConfig::quirks,
+                     "list: list of JsonDecoderQuirks, empty by default.")
+      .def_readwrite("json_pointer",
+                     &wuffs_aux_wrap::JsonDecoderConfig::json_pointer,
+                     "str: JSON pointer.");
+
+  py::class_<wuffs_aux_wrap::JsonDecoderError>(aux_m, "JsonDecoderError")
+  // clang-format off
+#define JDEE(error) .def_readonly_static(#error, &wuffs_aux_wrap::JsonDecoderError::error)
+      JDEE(BadJsonPointer)
+      JDEE(NoMatch)
+      JDEE(DuplicateMapKey)
+      JDEE(NonStringMapKey)
+      JDEE(NonContainerStackEntry)
+      JDEE(BadDepth)
+      JDEE(FailedToOpenFile)
+      JDEE(BadC0ControlCode)
+      JDEE(BadUtf8)
+      JDEE(BadBackslashEscape)
+      JDEE(BadInput)
+      JDEE(BadNewLineInAString)
+      JDEE(BadQuirkCombination)
+      JDEE(UnsupportedNumberLength)
+      JDEE(UnsupportedRecursionDepth)
+#undef JDEE
+      // clang-format on
+      ;
+
+  py::class_<wuffs_aux_wrap::JsonDecodingResult>(
+      aux_m, "JsonDecodingResult",
+      "JSON decoding result. The fields depend on whether decoding "
+      "succeeded:\n"
+      " - On total success, the error_message is empty and parsed is not "
+      "empty.\n"
+      " - On failure, the error_message is non-empty and parsed is empty.")
+      .def_readonly("cursor_position",
+                    &wuffs_aux_wrap::JsonDecodingResult::cursor_position,
+                    "int: cursor position.")
+      .def_readonly("parsed", &wuffs_aux_wrap::JsonDecodingResult::parsed,
+                    "obj: parsed JSON data.")
+      .def_readonly("error_message",
+                    &wuffs_aux_wrap::JsonDecodingResult::error_message,
+                    "str: error message, empty on success, one of "
+                    "JsonDecoderError on error.");
+
+  py::class_<wuffs_aux_wrap::JsonDecoder>(aux_m, "JsonDecoder",
+                                           "JSON decoder class.")
+      .def(py::init<const wuffs_aux_wrap::JsonDecoderConfig&>(),
+           "Sole constructor.\n\n"
+           "Args:"
+           "\n config (JsonDecoderConfig): JSON decoder config.")
+      .def(
+          "decode",
+          [](wuffs_aux_wrap::JsonDecoder& json_decoder,
+             const py::bytes& data) -> wuffs_aux_wrap::JsonDecodingResult {
+            py::buffer_info data_view(py::buffer(data).request());
+            return json_decoder.Decode(
+                reinterpret_cast<uint8_t*>(data_view.ptr), data_view.size);
+          },
+          "Decodes JSON using given byte buffer.\n\n"
+          "Args:"
+          "\n data (bytes): a byte buffer holding JSON string."
+          "\nReturns:"
+          "\n JsonDecodingResult: JSON decoding result.")
+      .def(
+          "decode",
+          [](wuffs_aux_wrap::JsonDecoder& json_decoder,
+             const std::string& path_to_file)
+              -> wuffs_aux_wrap::JsonDecodingResult {
+            return json_decoder.Decode(path_to_file);
+          },
+          "Decodes JSON using given file path.\n\n"
+          "Args:"
+          "\n path_to_file (str): path to a JSON file."
+          "\nReturns:"
+          "\n JsonDecodingResult: JSON decoding result.");
 }
