@@ -2,11 +2,12 @@
 
 #include <pybind11/numpy.h>
 
-#include <c/wuffs-v0.3.c>
 #include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
+
+#include "wuffs-unsupported-snapshot.c"
 
 // This API wraps the wuffs_aux API for image decoding. The wrapper is needed
 // since the wuffs_aux API uses the callback-based approach which doesn't play
@@ -127,13 +128,14 @@ struct ImageDecoderConfig {
       wuffs_aux::DecodeImageArgMaxInclMetadataLength::DefaultValue().repr;
   std::vector<ImageDecoderType> enabled_decoders = {
       ImageDecoderType::BMP, ImageDecoderType::GIF, ImageDecoderType::NIE,
-      ImageDecoderType::PNG, ImageDecoderType::TGA, ImageDecoderType::WBMP};
+      ImageDecoderType::PNG, ImageDecoderType::TGA, ImageDecoderType::WBMP,
+      ImageDecoderType::JPEG};
   uint32_t pixel_format = wuffs_base__make_pixel_format(
                               static_cast<uint32_t>(PixelFormat::BGRA_PREMUL))
                               .repr;
 };
 
-// This structs represents the wuffs_aux::DecodeImageCallbacks::HandleMetadata
+// This struct represents the wuffs_aux::DecodeImageCallbacks::HandleMetadata
 // input
 struct MetadataEntry {
   wuffs_base__more_information minfo{};
@@ -252,7 +254,7 @@ const std::string ImageDecoderError::FailedToOpenFile =
       uint32_t fourcc, wuffs_base__slice_u8 prefix_data,
       bool prefix_closed) override {
     if (enabled_decoders_.count(static_cast<ImageDecoderType>(fourcc)) == 0) {
-      return {nullptr, &free};
+      return {nullptr};
     }
     return wuffs_aux::DecodeImageCallbacks::SelectDecoder(fourcc, prefix_data,
                                                           prefix_closed);

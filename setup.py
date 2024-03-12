@@ -32,8 +32,7 @@ class CustomBuildExt(build_ext):
 ext_modules = [
     Pybind11Extension(
         "pywuffs",
-        ["src/wuffs-bindings.cpp"],
-        include_dirs=["libs/wuffs-mirror-release-c/release"]
+        ["src/wuffs-bindings.cpp"]
     ),
 ]
 

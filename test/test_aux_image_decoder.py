@@ -13,7 +13,8 @@ TEST_IMAGES = [
     (ImageDecoderType.TGA, IMAGES_PATH + "/lena.tga"),
     (ImageDecoderType.NIE, IMAGES_PATH + "/hippopotamus.nie"),
     (ImageDecoderType.GIF, IMAGES_PATH + "/lena.gif"),
-    (ImageDecoderType.WBMP, IMAGES_PATH + "/lena.wbmp")
+    (ImageDecoderType.WBMP, IMAGES_PATH + "/lena.wbmp"),
+    (ImageDecoderType.JPEG, IMAGES_PATH + "/lena.jpeg")
 ]
 
 
@@ -243,7 +244,7 @@ def test_decode_image_unsupported_image_format(param):
 @pytest.mark.parametrize("test_image", TEST_IMAGES)
 def test_decode_image_unsupported_pixel_format(test_image):
     config = ImageDecoderConfig()
-    config.pixel_format = PixelFormat.RGB
+    config.pixel_format = PixelFormat.YCOCGK
     decoder = ImageDecoder(config)
     decoding_result = decoder.decode(test_image[1])
     assert_not_decoded(decoding_result, ImageDecoderError.UnsupportedPixelFormat)

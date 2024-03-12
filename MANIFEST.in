@@ -1,2 +1,2 @@
-include src/wuffs-aux-image-wrapper.h src/wuffs-aux-json-wrapper.h libs/wuffs-mirror-release-c/release/c/wuffs-v0.3.c
+include src/wuffs-aux-image-wrapper.h src/wuffs-aux-json-wrapper.h src/wuffs-unsupported-snapshot.c
 

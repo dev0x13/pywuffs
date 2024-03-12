@@ -10,7 +10,9 @@ it only provides bindings for image and JSON decoding parts of
 the [Auxiliary C++ API](https://github.com/google/wuffs/blob/main/doc/note/auxiliary-code.md) as being of the most
 interest since it provides for "ridiculously fast" decoding of images of some types.
 
-Current version of Wuffs library used in this project is **0.3.3**.
+Current version of Wuffs library used in this project is **unsupported snapshot** taken from
+[this](https://github.com/google/wuffs/commit/13c72db3508d33b9416a22a0ab8a8d4d8d5cd7be) commit. The primary
+rationale for using the snapshot version instead of a stable release is that it provides JPEG decoder.
 
 ## Installation
 
