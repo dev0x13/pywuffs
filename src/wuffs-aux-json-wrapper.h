@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "wuffs-unsupported-snapshot.c"
+#include <wuffs-unsupported-snapshot.c>
 
 // This API wraps the wuffs_aux API for JSON decoding. The wrapper is needed
 // since the wuffs_aux API uses the callback-based approach which doesn't play

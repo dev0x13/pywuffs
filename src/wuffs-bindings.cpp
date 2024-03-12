@@ -3,7 +3,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "wuffs-unsupported-snapshot.c"
+#include <wuffs-unsupported-snapshot.c>
 
 #include "wuffs-aux-image-wrapper.h"
 #include "wuffs-aux-json-wrapper.h"

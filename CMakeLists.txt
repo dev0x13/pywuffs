@@ -18,11 +18,7 @@ elseif(MSVC)
   set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "/arch:AVX")
 endif()
 
-file(
-  DOWNLOAD
-  https://raw.githubusercontent.com/google/wuffs/13c72db3508d33b9416a22a0ab8a8d4d8d5cd7be/release/c/wuffs-unsupported-snapshot.c
-  ${CMAKE_SOURCE_DIR}/src/wuffs-unsupported-snapshot.c)
-
 find_package(pybind11 REQUIRED)
 
 pybind11_add_module(pywuffs src/wuffs-bindings.cpp)
+target_include_directories(pywuffs PRIVATE libs/wuffs/release/c/)
