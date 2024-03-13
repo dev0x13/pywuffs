@@ -50,6 +50,44 @@ cmake -A x64 ..
 cmake --build .
 ```
 
+## Usage example
+
+The example below demonstrates how to decode a PNG image and its EXIF metadata:
+
+```python
+from pywuffs import ImageDecoderType, PixelFormat
+from pywuffs.aux import (
+    ImageDecoder,
+    ImageDecoderConfig,
+    ImageDecoderFlags
+)
+
+config = ImageDecoderConfig()
+
+# All decoders are enabled by default
+config.enabled_decoders = [ImageDecoderType.PNG]
+
+# No metadata is reported by default
+config.flags = [ImageDecoderFlags.REPORT_METADATA_EXIF]
+
+# Pixel format is PixelFormat.BGRA_PREMUL by default
+config.pixel_format = PixelFormat.BGR
+
+decoder = ImageDecoder(config)
+
+decoding_result = decoder.decode("lena.png")
+
+# Decoded image data in BGR format
+image_data = decoding_result.pixbuf
+
+# Shape of the decoded image
+image_shape = decoding_result.pixbuf.shape
+
+# Parsed EXIF metadata
+meta_minfo = decoding_result.reported_metadata[0].minfo
+meta_bytes = decoding_result.reported_metadata[0].data.tobytes()
+```
+
 ## API reference
 
 API documentation is available at https://pywuffs.readthedocs.io. 

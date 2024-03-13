@@ -2,6 +2,9 @@ from collections import defaultdict
 from setuptools import setup
 from pybind11.setup_helpers import Pybind11Extension
 from setuptools.command.build_ext import build_ext
+from pathlib import Path
+
+long_description = (Path(__file__).parent / "README.md").read_text()
 
 UNIX_BUILD_ARGS = ["-O3", "-g0", "-s", "--std=c++14",
                    "-fvisibility=hidden", "-flto", "-fno-fat-lto-objects"]
@@ -38,9 +41,11 @@ ext_modules = [
 ]
 
 setup(name="pywuffs",
-      version="1.2.0",
+      version="1.2.1",
       description="Python bindings for Wuffs the Library",
       author="Georgiy Manuilov",
       url="https://github.com/dev0x13/pywuffs",
       cmdclass={"build_ext": CustomBuildExt},
+      long_description=long_description,
+      long_description_content_type="text/markdown",
       ext_modules=ext_modules)
