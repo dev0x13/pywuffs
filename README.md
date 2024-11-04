@@ -11,7 +11,7 @@ the [Auxiliary C++ API](https://github.com/google/wuffs/blob/main/doc/note/auxil
 interest since it provides for "ridiculously fast" decoding of images of some types.
 
 Current version of Wuffs library used in this project is **unsupported snapshot** taken from
-[this](https://github.com/google/wuffs/tree/13c72db3508d33b9416a22a0ab8a8d4d8d5cd7be) commit. The primary
+[this](https://github.com/google/wuffs/releases/tag/v0.4.0-alpha.9) tag. The primary
 rationale for using the snapshot version instead of a stable release is that it provides JPEG decoder.
 
 ## Installation

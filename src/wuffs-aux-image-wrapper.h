@@ -2,12 +2,14 @@
 
 #include <pybind11/numpy.h>
 
+#include <map>
 #include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
-
 #include <wuffs-unsupported-snapshot.c>
+
+#include "wuffs-aux-utils.h"
 
 // This API wraps the wuffs_aux API for image decoding. The wrapper is needed
 // since the wuffs_aux API uses the callback-based approach which doesn't play
@@ -119,7 +121,7 @@ struct ImageDecoderConfig {
   std::vector<ImageDecoderFlags> flags;
   PixelBlend pixel_blend = static_cast<PixelBlend>(
       wuffs_aux::DecodeImageArgPixelBlend::DefaultValue().repr);
-  std::vector<ImageDecoderQuirks> quirks;
+  std::map<ImageDecoderQuirks, uint64_t> quirks;
   uint32_t background_color =
       wuffs_aux::DecodeImageArgBackgroundColor::DefaultValue().repr;
   uint32_t max_incl_dimension =
@@ -227,16 +229,15 @@ const std::string ImageDecoderError::UnsupportedPixelFormat =
 const std::string ImageDecoderError::FailedToOpenFile =
     "wuffs_aux_wrap::ImageDecoder::Decode: failed to open file";
 
-    class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
+class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
  public:
   explicit ImageDecoder(const ImageDecoderConfig& config)
-      : quirks_vector_({config.quirks.begin(), config.quirks.end()}),
+      : quirks_vector_(utils::ConvertQuirks(config.quirks)),
         enabled_decoders_(
             {config.enabled_decoders.begin(), config.enabled_decoders.end()}),
         pixel_format_(wuffs_base__make_pixel_format(config.pixel_format)),
-        quirks_(wuffs_aux::DecodeImageArgQuirks(
-            reinterpret_cast<uint32_t*>(quirks_vector_.data()),
-            quirks_vector_.size())),
+        quirks_(wuffs_aux::DecodeImageArgQuirks(quirks_vector_.data(),
+                                                quirks_vector_.size())),
         flags_(GetFlagsBitmask(config.flags)),
         pixel_blend_(wuffs_aux::DecodeImageArgPixelBlend(
             static_cast<uint32_t>(config.pixel_blend))),
@@ -354,7 +355,7 @@ const std::string ImageDecoderError::FailedToOpenFile =
 
  private:
   ImageDecodingResult decoding_result_;
-  std::vector<ImageDecoderQuirks> quirks_vector_;
+  std::vector<wuffs_aux::QuirkKeyValuePair> quirks_vector_;
   std::unordered_set<ImageDecoderType> enabled_decoders_;
   wuffs_base__pixel_format pixel_format_;
   wuffs_aux::DecodeImageArgQuirks quirks_;

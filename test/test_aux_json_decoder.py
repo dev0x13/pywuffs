@@ -41,8 +41,8 @@ def test_decode_default_config(file_path):
 
 def test_decode_json_quirks():
     config = JsonDecoderConfig()
-    config.quirks = [JsonDecoderQuirks.ALLOW_COMMENT_BLOCK,
-                     JsonDecoderQuirks.ALLOW_EXTRA_COMMA]
+    config.quirks = {JsonDecoderQuirks.ALLOW_COMMENT_BLOCK: 1,
+                     JsonDecoderQuirks.ALLOW_EXTRA_COMMA: 1}
     decoder = JsonDecoder(config)
     data = b"{\"test\": \"value\", \"test1\": 123,}"
     decoding_result = decoder.decode(data)

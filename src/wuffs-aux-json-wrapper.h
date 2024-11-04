@@ -3,11 +3,13 @@
 #include <pybind11/numpy.h>
 #include <pybind11/pytypes.h>
 
+#include <map>
 #include <string>
 #include <utility>
 #include <vector>
-
 #include <wuffs-unsupported-snapshot.c>
+
+#include "wuffs-aux-utils.h"
 
 // This API wraps the wuffs_aux API for JSON decoding. The wrapper is needed
 // since the wuffs_aux API uses the callback-based approach which doesn't play
@@ -45,7 +47,7 @@ enum class JsonDecoderQuirks : uint32_t {
 // This struct hosts wuffs_aux::DecodeJson arguments in more user- and
 // Python- friendly fashion
 struct JsonDecoderConfig {
-  std::vector<JsonDecoderQuirks> quirks;
+  std::map<JsonDecoderQuirks, uint64_t> quirks;
   std::string json_pointer;
 };
 
@@ -107,14 +109,20 @@ const std::string JsonDecoderError::BadDepth =
 const std::string JsonDecoderError::FailedToOpenFile =
     "wuffs_aux_wrap::JsonDecoder::Decode: failed to open file";
 // + 1 is for stripping leading '#'
-const std::string JsonDecoderError::BadC0ControlCode = wuffs_json__error__bad_c0_control_code + 1;
+const std::string JsonDecoderError::BadC0ControlCode =
+    wuffs_json__error__bad_c0_control_code + 1;
 const std::string JsonDecoderError::BadUtf8 = wuffs_json__error__bad_utf_8 + 1;
-const std::string JsonDecoderError::BadBackslashEscape = wuffs_json__error__bad_backslash_escape + 1;
+const std::string JsonDecoderError::BadBackslashEscape =
+    wuffs_json__error__bad_backslash_escape + 1;
 const std::string JsonDecoderError::BadInput = wuffs_json__error__bad_input + 1;
-const std::string JsonDecoderError::BadNewLineInAString = wuffs_json__error__bad_new_line_in_a_string + 1;
-const std::string JsonDecoderError::BadQuirkCombination = wuffs_json__error__bad_quirk_combination + 1;
-const std::string JsonDecoderError::UnsupportedNumberLength = wuffs_json__error__unsupported_number_length + 1;
-const std::string JsonDecoderError::UnsupportedRecursionDepth = wuffs_json__error__unsupported_recursion_depth + 1;
+const std::string JsonDecoderError::BadNewLineInAString =
+    wuffs_json__error__bad_new_line_in_a_string + 1;
+const std::string JsonDecoderError::BadQuirkCombination =
+    wuffs_json__error__bad_quirk_combination + 1;
+const std::string JsonDecoderError::UnsupportedNumberLength =
+    wuffs_json__error__unsupported_number_length + 1;
+const std::string JsonDecoderError::UnsupportedRecursionDepth =
+    wuffs_json__error__unsupported_recursion_depth + 1;
 
 class JsonDecoder : public wuffs_aux::DecodeJsonCallbacks {
  public:
@@ -132,10 +140,9 @@ class JsonDecoder : public wuffs_aux::DecodeJsonCallbacks {
   };
 
   explicit JsonDecoder(const JsonDecoderConfig& config)
-      : quirks_vector_({config.quirks.begin(), config.quirks.end()}),
-        quirks_(wuffs_aux::DecodeJsonArgQuirks(
-            reinterpret_cast<uint32_t*>(quirks_vector_.data()),
-            quirks_vector_.size())),
+      : quirks_vector_(utils::ConvertQuirks(config.quirks)),
+        quirks_(wuffs_aux::DecodeJsonArgQuirks(quirks_vector_.data(),
+                                               quirks_vector_.size())),
         json_pointer_(config.json_pointer) {}
 
   /* DecodeJsonCallbacks methods implementation */
@@ -247,7 +254,7 @@ class JsonDecoder : public wuffs_aux::DecodeJsonCallbacks {
   }
 
  private:
-  std::vector<JsonDecoderQuirks> quirks_vector_;
+  std::vector<wuffs_aux::QuirkKeyValuePair> quirks_vector_;
   wuffs_aux::DecodeJsonArgQuirks quirks_;
   wuffs_aux::DecodeJsonArgJsonPointer json_pointer_;
   std::vector<Entry> stack_;

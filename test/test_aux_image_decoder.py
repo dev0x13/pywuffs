@@ -125,7 +125,7 @@ def test_decode_background_color(background_color, test_image):
 ])
 def test_decode_image_quirks(test_image, quirk):
     config = ImageDecoderConfig()
-    config.quirks = [quirk]
+    config.quirks = {quirk: 1}
     decoder = ImageDecoder(config)
     decoding_result = decoder.decode(test_image[1])
     assert_decoded(decoding_result)

@@ -217,9 +217,9 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
                      "PixelBlend: pixel blend mode, default is PixelBlend.SRC.")
       .def_readwrite(
           "quirks", &wuffs_aux_wrap::ImageDecoderConfig::quirks,
-          "list: list of ImageDecoderQuirks, empty by default (PNG "
-          "decoder will always have ImageDecoderQuirks.IGNORE_CHECKSUM quirk "
-          "enabled implicitly).")
+          "dict: dict of ImageDecoderQuirks:<quirk-value> pairs, empty by "
+          "default (PNG decoder will always have "
+          "ImageDecoderQuirks.IGNORE_CHECKSUM quirk enabled implicitly).")
       .def_readwrite(
           "background_color",
           &wuffs_aux_wrap::ImageDecoderConfig::background_color,
@@ -437,7 +437,7 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
                     "JsonDecoderError on error.");
 
   py::class_<wuffs_aux_wrap::JsonDecoder>(aux_m, "JsonDecoder",
-                                           "JSON decoder class.")
+                                          "JSON decoder class.")
       .def(py::init<const wuffs_aux_wrap::JsonDecoderConfig&>(),
            "Sole constructor.\n\n"
            "Args:"
