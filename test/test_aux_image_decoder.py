@@ -14,7 +14,11 @@ TEST_IMAGES = [
     (ImageDecoderType.NIE, IMAGES_PATH + "/hippopotamus.nie"),
     (ImageDecoderType.GIF, IMAGES_PATH + "/lena.gif"),
     (ImageDecoderType.WBMP, IMAGES_PATH + "/lena.wbmp"),
-    (ImageDecoderType.JPEG, IMAGES_PATH + "/lena.jpeg")
+    (ImageDecoderType.JPEG, IMAGES_PATH + "/lena.jpeg"),
+    (ImageDecoderType.WEBP, IMAGES_PATH + "/lena.webp"),
+    (ImageDecoderType.QOI, IMAGES_PATH + "/lena.qoi"),
+    (ImageDecoderType.ETC2, IMAGES_PATH + "/bricks-color.etc2.pkm"),
+    (ImageDecoderType.TH, IMAGES_PATH + "/1QcSHQRnh493V4dIh4eXh1h4kJUI.th")
 ]
 
 
@@ -121,7 +125,8 @@ def test_decode_background_color(background_color, test_image):
     ImageDecoderQuirks.GIF_IGNORE_TOO_MUCH_PIXEL_DATA,
     ImageDecoderQuirks.GIF_IMAGE_BOUNDS_ARE_STRICT,
     ImageDecoderQuirks.GIF_REJECT_EMPTY_FRAME,
-    ImageDecoderQuirks.GIF_REJECT_EMPTY_PALETTE
+    ImageDecoderQuirks.GIF_REJECT_EMPTY_PALETTE,
+    ImageDecoderQuirks.QUALITY
 ])
 def test_decode_image_quirks(test_image, quirk):
     config = ImageDecoderConfig()
@@ -129,6 +134,21 @@ def test_decode_image_quirks(test_image, quirk):
     decoder = ImageDecoder(config)
     decoding_result = decoder.decode(test_image[1])
     assert_decoded(decoding_result)
+
+
+def test_decode_image_quirks_quality():
+    config = ImageDecoderConfig()
+    config.quirks = {ImageDecoderQuirks.QUALITY: LowerQuality}
+    decoder = ImageDecoder(config)
+    decoding_result_lower_quality = decoder.decode(IMAGES_PATH + "/lena.jpeg")
+    assert_decoded(decoding_result_lower_quality)
+    assert decoding_result_lower_quality.pixbuf.shape == (32, 32, 4)
+    config.quirks = {ImageDecoderQuirks.QUALITY: HigherQuality}
+    decoder = ImageDecoder(config)
+    decoding_result_higher_quality = decoder.decode(IMAGES_PATH + "/lena.jpeg")
+    assert_decoded(decoding_result_higher_quality)
+    assert decoding_result_higher_quality.pixbuf.shape == (32, 32, 4)
+    assert decoding_result_lower_quality != decoding_result_higher_quality
 
 
 @pytest.mark.parametrize("test_image", TEST_IMAGES)
@@ -219,7 +239,7 @@ def test_decode_image_formats_truncated(param):
     decoder = ImageDecoder(config)
     with open(param[1], "rb") as f:
         data = f.read()
-    data = data[:len(data) - 64]
+    data = data[:len(data) - 32]
     decoding_result = decoder.decode(data)
     assert decoding_result.error_message.endswith("truncated input")
     assert decoding_result.pixcfg.is_valid()

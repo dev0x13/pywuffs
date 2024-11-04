@@ -81,7 +81,12 @@ PYBIND11_MODULE(pywuffs, m) {
       .value("GIF_REJECT_EMPTY_FRAME",
              wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_FRAME)
       .value("GIF_REJECT_EMPTY_PALETTE",
-             wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_PALETTE);
+             wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_PALETTE)
+      .value("QUALITY",
+             wuffs_aux_wrap::ImageDecoderQuirks::QUALITY,
+             "Configures decoders (for a lossy format, where there is some "
+             "leeway in \"a/the correct decoding\") to use lower than, equal "
+             "to or higher than the default quality setting.");
 
   py::enum_<wuffs_aux_wrap::ImageDecoderType>(m, "ImageDecoderType")
       .value("BMP", wuffs_aux_wrap::ImageDecoderType::BMP)
@@ -90,7 +95,14 @@ PYBIND11_MODULE(pywuffs, m) {
       .value("PNG", wuffs_aux_wrap::ImageDecoderType::PNG)
       .value("TGA", wuffs_aux_wrap::ImageDecoderType::TGA)
       .value("WBMP", wuffs_aux_wrap::ImageDecoderType::WBMP)
-      .value("JPEG", wuffs_aux_wrap::ImageDecoderType::JPEG);
+      .value("JPEG", wuffs_aux_wrap::ImageDecoderType::JPEG)
+      .value("WEBP", wuffs_aux_wrap::ImageDecoderType::WEBP)
+      .value("QOI", wuffs_aux_wrap::ImageDecoderType::QOI)
+      .value("ETC2", wuffs_aux_wrap::ImageDecoderType::ETC2)
+      .value("TH", wuffs_aux_wrap::ImageDecoderType::TH);
+
+  m.attr("LowerQuality") = wuffs_aux_wrap::kLowerQuality;
+  m.attr("HigherQuality") = wuffs_aux_wrap::kHigherQuality;
 
   // clang-format off
 #define PYPF(pf) .value(#pf, wuffs_aux_wrap::PixelFormat::pf)

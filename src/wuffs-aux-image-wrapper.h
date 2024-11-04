@@ -46,8 +46,13 @@ enum class ImageDecoderQuirks : uint32_t {
   GIF_IGNORE_TOO_MUCH_PIXEL_DATA = WUFFS_GIF__QUIRK_IGNORE_TOO_MUCH_PIXEL_DATA,
   GIF_IMAGE_BOUNDS_ARE_STRICT = WUFFS_GIF__QUIRK_IMAGE_BOUNDS_ARE_STRICT,
   GIF_REJECT_EMPTY_FRAME = WUFFS_GIF__QUIRK_REJECT_EMPTY_FRAME,
-  GIF_REJECT_EMPTY_PALETTE = WUFFS_GIF__QUIRK_REJECT_EMPTY_PALETTE
+  GIF_REJECT_EMPTY_PALETTE = WUFFS_GIF__QUIRK_REJECT_EMPTY_PALETTE,
+  QUALITY = WUFFS_BASE__QUIRK_QUALITY
 };
+
+const uint64_t kLowerQuality = WUFFS_BASE__QUIRK_QUALITY__VALUE__LOWER_QUALITY;
+const uint64_t kHigherQuality =
+    WUFFS_BASE__QUIRK_QUALITY__VALUE__HIGHER_QUALITY;
 
 enum class ImageDecoderType : uint32_t {
 #define IDTE(dt) dt = WUFFS_BASE__FOURCC__##dt
@@ -57,7 +62,11 @@ enum class ImageDecoderType : uint32_t {
   IDTE(PNG),
   IDTE(TGA),
   IDTE(WBMP),
-  IDTE(JPEG)
+  IDTE(JPEG),
+  IDTE(WEBP),
+  IDTE(QOI),
+  IDTE(ETC2),
+  IDTE(TH)
 #undef IDTE
 };
 
@@ -131,7 +140,8 @@ struct ImageDecoderConfig {
   std::vector<ImageDecoderType> enabled_decoders = {
       ImageDecoderType::BMP, ImageDecoderType::GIF, ImageDecoderType::NIE,
       ImageDecoderType::PNG, ImageDecoderType::TGA, ImageDecoderType::WBMP,
-      ImageDecoderType::JPEG};
+      ImageDecoderType::JPEG, ImageDecoderType::WEBP, ImageDecoderType::QOI,
+      ImageDecoderType::ETC2, ImageDecoderType::TH};
   uint32_t pixel_format = wuffs_base__make_pixel_format(
                               static_cast<uint32_t>(PixelFormat::BGRA_PREMUL))
                               .repr;
