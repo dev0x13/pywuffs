@@ -216,8 +216,14 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
                                             "Holds parsed metadata piece.")
       .def_readonly("minfo", &wuffs_aux_wrap::MetadataEntry::minfo,
                     "wuffs_base__more_information: Info on parsed metadata.")
-      .def_readonly("data", &wuffs_aux_wrap::MetadataEntry::data,
-                    "np.array: Parsed metadata (1D uint8 Numpy array).");
+      .def_property_readonly("data", [](const wuffs_aux_wrap::MetadataEntry& self) {
+          // Create numpy array directly from the vector's data
+          return pybind11::array_t<uint8_t>(
+              {self.raw_data.size()},                                    // shape
+              {sizeof(uint8_t)},                                       // strides
+              self.raw_data.data()                                    // data pointer
+          );
+      }, "np.array: Parsed metadata (1D uint8 Numpy array).");
 
   py::class_<wuffs_aux_wrap::ImageDecoderConfig>(aux_m, "ImageDecoderConfig",
                                                  "Image decoder configuration.")

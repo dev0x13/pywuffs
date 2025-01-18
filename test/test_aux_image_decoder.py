@@ -2,6 +2,8 @@ import os
 from struct import unpack
 import pytest
 import numpy as np
+from concurrent.futures import ThreadPoolExecutor
+import time
 
 from pywuffs.aux import *
 from pywuffs import *
@@ -286,3 +288,97 @@ def test_decode_image_max_incl_metadata_length():
     decoder = ImageDecoder(config)
     decoding_result = decoder.decode(IMAGES_PATH + "/lena_exif.png")
     assert_not_decoded(decoding_result, ImageDecoderError.MaxInclMetadataLengthExceeded)
+
+
+def test_decode_multithreaded():
+    """Test that image decoding can run in parallel with GIL released."""
+    config = ImageDecoderConfig()
+    decoder = ImageDecoder(config)
+    
+    # Use a larger image for better timing measurement
+    test_image = IMAGES_PATH + "/lena.png"
+    num_threads = [1, 2, 4, 8]  # Test different thread counts
+    times = []
+    
+    for n_threads in num_threads:
+        with ThreadPoolExecutor(max_workers=n_threads) as executor:
+            start_time = time.time()
+            
+            # Submit n_threads decode tasks
+            futures = [
+                executor.submit(decoder.decode, test_image)
+                for _ in range(n_threads)
+            ]
+            
+            # Wait for all tasks and verify results
+            results = [future.result() for future in futures]
+            end_time = time.time()
+            
+            # All results should be valid
+            for result in results:
+                assert_decoded(result)
+                # All results should be identical
+                assert np.array_equal(results[0].pixbuf, result.pixbuf)
+            
+            times.append(end_time - start_time)
+    
+    # Verify that parallel execution is faster than sequential
+    # The time for n threads should be less than n times the single thread time
+    # We use a factor of 0.8 to account for overhead and system variations
+    single_thread_time = times[0]
+    for n_threads, thread_time in zip(num_threads[1:], times[1:]):
+        assert thread_time < (single_thread_time * n_threads * 0.8), \
+            f"Multi-threaded execution with {n_threads} threads is not efficient enough"
+
+
+def test_decode_multithreaded_different_images():
+    """Test parallel decoding of different image types."""
+    config = ImageDecoderConfig()
+    decoder = ImageDecoder(config)
+    
+    # Test with first 4 different image types
+    test_images = TEST_IMAGES[:4]
+    
+    with ThreadPoolExecutor(max_workers=len(test_images)) as executor:
+        # Submit decode tasks for different images
+        futures = [
+            executor.submit(decoder.decode, img[1])
+            for img in test_images
+        ]
+        
+        # Wait for all tasks and verify results
+        results = [future.result() for future in futures]
+        
+        # All results should be valid
+        for result in results:
+            assert_decoded(result)
+
+
+def test_decode_multithreaded_with_metadata():
+    """Test parallel decoding with metadata handling."""
+    config = ImageDecoderConfig()
+    config.flags = [ImageDecoderFlags.REPORT_METADATA_EXIF]
+    decoder = ImageDecoder(config)
+    
+    # Use image with EXIF data
+    test_image = IMAGES_PATH + "/lena_exif.png"
+    num_threads = 4
+    
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        # Submit decode tasks
+        futures = [
+            executor.submit(decoder.decode, test_image)
+            for _ in range(num_threads)
+        ]
+        
+        # Wait for all tasks and verify results
+        results = [future.result() for future in futures]
+        
+        # All results should be valid and contain metadata
+        for result in results:
+            assert_decoded(result, 1)  # Expect 1 metadata entry
+            # Verify EXIF orientation
+            meta_minfo = result.reported_metadata[0].minfo
+            meta_bytes = result.reported_metadata[0].data.tobytes()
+            assert meta_minfo.metadata__fourcc() == 1163413830  # EXIF
+            assert meta_bytes[:2] == b"II"  # little endian
