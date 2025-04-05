@@ -365,7 +365,7 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
   py::class_<wuffs_aux_wrap::ImageDecoder>(aux_m, "ImageDecoder",
                                            "Image decoder class.")
       .def(py::init<const wuffs_aux_wrap::ImageDecoderConfig&>(),
-           "Sole constructor.\n\n"
+           "Sole constructor. Please note that the class is not thread-safe.\n\n"
            "Args:"
            "\n config (ImageDecoderConfig): image decoder config.")
       .def(

@@ -20,6 +20,7 @@ TEST_IMAGES = [
     (ImageDecoderType.ETC2, os.path.join(IMAGES_PATH, "bricks-color.etc2.pkm")),
     (ImageDecoderType.TH, os.path.join(IMAGES_PATH, "1QcSHQRnh493V4dIh4eXh1h4kJUI.th"))
 ]
+EXIF_FOURCC = 0x45584946
 
 
 # Positive test cases
@@ -181,7 +182,7 @@ def test_decode_image_exif_metadata():
     assert decoding_result.pixbuf.shape == (32, 32, 4)
     meta_minfo = decoding_result.reported_metadata[0].minfo
     meta_bytes = decoding_result.reported_metadata[0].data.tobytes()
-    assert meta_minfo.metadata__fourcc() == 1163413830  # EXIF
+    assert meta_minfo.metadata__fourcc() == EXIF_FOURCC
     assert meta_bytes[:2] == b"II"  # little endian
     exif_orientation = 0
     cursor = 0
@@ -332,5 +333,5 @@ def test_decode_multithreaded_with_metadata():
             assert_decoded(result, 1)
             meta_minfo = result.reported_metadata[0].minfo
             meta_bytes = result.reported_metadata[0].data.tobytes()
-            assert meta_minfo.metadata__fourcc() == 1163413830
+            assert meta_minfo.metadata__fourcc() == EXIF_FOURCC
             assert meta_bytes[:2] == b"II"
