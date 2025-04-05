@@ -6,19 +6,19 @@ import numpy as np
 from pywuffs.aux import *
 from pywuffs import *
 
-IMAGES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images/")
+IMAGES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images")
 TEST_IMAGES = [
-    (ImageDecoderType.PNG, IMAGES_PATH + "/lena.png"),
-    (ImageDecoderType.BMP, IMAGES_PATH + "/lena.bmp"),
-    (ImageDecoderType.TGA, IMAGES_PATH + "/lena.tga"),
-    (ImageDecoderType.NIE, IMAGES_PATH + "/hippopotamus.nie"),
-    (ImageDecoderType.GIF, IMAGES_PATH + "/lena.gif"),
-    (ImageDecoderType.WBMP, IMAGES_PATH + "/lena.wbmp"),
-    (ImageDecoderType.JPEG, IMAGES_PATH + "/lena.jpeg"),
-    (ImageDecoderType.WEBP, IMAGES_PATH + "/lena.webp"),
-    (ImageDecoderType.QOI, IMAGES_PATH + "/lena.qoi"),
-    (ImageDecoderType.ETC2, IMAGES_PATH + "/bricks-color.etc2.pkm"),
-    (ImageDecoderType.TH, IMAGES_PATH + "/1QcSHQRnh493V4dIh4eXh1h4kJUI.th")
+    (ImageDecoderType.PNG, os.path.join(IMAGES_PATH, "lena.png")),
+    (ImageDecoderType.BMP, os.path.join(IMAGES_PATH, "lena.bmp")),
+    (ImageDecoderType.TGA, os.path.join(IMAGES_PATH, "lena.tga")),
+    (ImageDecoderType.NIE, os.path.join(IMAGES_PATH, "hippopotamus.nie")),
+    (ImageDecoderType.GIF, os.path.join(IMAGES_PATH, "lena.gif")),
+    (ImageDecoderType.WBMP, os.path.join(IMAGES_PATH, "lena.wbmp")),
+    (ImageDecoderType.JPEG, os.path.join(IMAGES_PATH, "lena.jpeg")),
+    (ImageDecoderType.WEBP, os.path.join(IMAGES_PATH, "lena.webp")),
+    (ImageDecoderType.QOI, os.path.join(IMAGES_PATH, "lena.qoi")),
+    (ImageDecoderType.ETC2, os.path.join(IMAGES_PATH, "bricks-color.etc2.pkm")),
+    (ImageDecoderType.TH, os.path.join(IMAGES_PATH, "1QcSHQRnh493V4dIh4eXh1h4kJUI.th"))
 ]
 
 
@@ -48,7 +48,7 @@ def test_decode_image_with_metadata(param):
     config = ImageDecoderConfig()
     config.flags = param[0]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode(IMAGES_PATH + "/lena_exif.png")
+    decoding_result = decoder.decode(os.path.join(IMAGES_PATH, "lena_exif.png"))
     assert_decoded(decoding_result, param[1])
 
 
@@ -140,12 +140,12 @@ def test_decode_image_quirks_quality():
     config = ImageDecoderConfig()
     config.quirks = {ImageDecoderQuirks.QUALITY: LowerQuality}
     decoder = ImageDecoder(config)
-    decoding_result_lower_quality = decoder.decode(IMAGES_PATH + "/lena.jpeg")
+    decoding_result_lower_quality = decoder.decode(os.path.join(IMAGES_PATH, "lena.jpeg"))
     assert_decoded(decoding_result_lower_quality)
     assert decoding_result_lower_quality.pixbuf.shape == (32, 32, 4)
     config.quirks = {ImageDecoderQuirks.QUALITY: HigherQuality}
     decoder = ImageDecoder(config)
-    decoding_result_higher_quality = decoder.decode(IMAGES_PATH + "/lena.jpeg")
+    decoding_result_higher_quality = decoder.decode(os.path.join(IMAGES_PATH, "lena.jpeg"))
     assert_decoded(decoding_result_higher_quality)
     assert decoding_result_higher_quality.pixbuf.shape == (32, 32, 4)
     assert decoding_result_lower_quality != decoding_result_higher_quality
@@ -176,7 +176,7 @@ def test_decode_image_exif_metadata():
     config = ImageDecoderConfig()
     config.flags = [ImageDecoderFlags.REPORT_METADATA_EXIF]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode(IMAGES_PATH + "/lena_exif.png")
+    decoding_result = decoder.decode(os.path.join(IMAGES_PATH, "lena_exif.png"))
     assert_decoded(decoding_result, 1)
     assert decoding_result.pixbuf.shape == (32, 32, 4)
     meta_minfo = decoding_result.reported_metadata[0].minfo
@@ -215,7 +215,7 @@ def test_decode_image_invalid_kvp_chunk():
     config = ImageDecoderConfig()
     config.flags = [ImageDecoderFlags.REPORT_METADATA_KVP]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode(IMAGES_PATH + "/lena.png")
+    decoding_result = decoder.decode(os.path.join(IMAGES_PATH, "lena.png"))
     assert_not_decoded(decoding_result, "png: bad text chunk (not Latin-1)", 1)
 
 
@@ -284,5 +284,53 @@ def test_decode_image_max_incl_metadata_length():
     config.max_incl_metadata_length = 8
     config.flags = [ImageDecoderFlags.REPORT_METADATA_EXIF]
     decoder = ImageDecoder(config)
-    decoding_result = decoder.decode(IMAGES_PATH + "/lena_exif.png")
+    decoding_result = decoder.decode(os.path.join(IMAGES_PATH, "lena_exif.png"))
     assert_not_decoded(decoding_result, ImageDecoderError.MaxInclMetadataLengthExceeded)
+
+
+# Multithreading tests
+
+from concurrent.futures import ThreadPoolExecutor
+
+
+def test_decode_multithreaded():
+    config = ImageDecoderConfig()
+
+    def decode(image):
+        decoder = ImageDecoder(config)
+        return decoder.decode(image)
+
+    test_image = os.path.join(IMAGES_PATH, "lena.png")
+    with open(test_image, "rb") as f:
+        test_image_data = f.read()
+
+    for payload in (test_image, test_image_data):
+        for num_threads in (1, 2, 4, 8):
+            with ThreadPoolExecutor(max_workers=num_threads) as executor:
+                futures = [executor.submit(decode, payload) for _ in range(num_threads)]
+                results = [future.result() for future in futures]
+                for result in results:
+                    assert_decoded(result)
+                    assert np.array_equal(results[0].pixbuf, result.pixbuf)
+
+
+def test_decode_multithreaded_with_metadata():
+    config = ImageDecoderConfig()
+    config.flags = [ImageDecoderFlags.REPORT_METADATA_EXIF]
+
+    def decode(image):
+        decoder = ImageDecoder(config)
+        return decoder.decode(image)
+
+    test_image = os.path.join(IMAGES_PATH, "lena_exif.png")
+    num_threads = 4
+
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        futures = [executor.submit(decode, test_image) for _ in range(num_threads)]
+        results = [future.result() for future in futures]
+        for result in results:
+            assert_decoded(result, 1)
+            meta_minfo = result.reported_metadata[0].minfo
+            meta_bytes = result.reported_metadata[0].data.tobytes()
+            assert meta_minfo.metadata__fourcc() == 1163413830
+            assert meta_bytes[:2] == b"II"
