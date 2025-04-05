@@ -82,8 +82,7 @@ PYBIND11_MODULE(pywuffs, m) {
              wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_FRAME)
       .value("GIF_REJECT_EMPTY_PALETTE",
              wuffs_aux_wrap::ImageDecoderQuirks::GIF_REJECT_EMPTY_PALETTE)
-      .value("QUALITY",
-             wuffs_aux_wrap::ImageDecoderQuirks::QUALITY,
+      .value("QUALITY", wuffs_aux_wrap::ImageDecoderQuirks::QUALITY,
              "Configures decoders (for a lossy format, where there is some "
              "leeway in \"a/the correct decoding\") to use lower than, equal "
              "to or higher than the default quality setting.");
@@ -216,8 +215,15 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
                                             "Holds parsed metadata piece.")
       .def_readonly("minfo", &wuffs_aux_wrap::MetadataEntry::minfo,
                     "wuffs_base__more_information: Info on parsed metadata.")
-      .def_readonly("data", &wuffs_aux_wrap::MetadataEntry::data,
-                    "np.array: Parsed metadata (1D uint8 Numpy array).");
+      .def_property_readonly(
+          "data",
+          [](wuffs_aux_wrap::MetadataEntry& self) {
+            return pybind11::array_t<uint8_t>(pybind11::buffer_info(
+                self.data.data(), sizeof(uint8_t),
+                pybind11::format_descriptor<uint8_t>::value, 1,
+                {self.data.size()}, {1}));
+          },
+          "np.array: Parsed metadata (1D uint8 Numpy array).");
 
   py::class_<wuffs_aux_wrap::ImageDecoderConfig>(aux_m, "ImageDecoderConfig",
                                                  "Image decoder configuration.")
@@ -319,9 +325,31 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
       "or reject partial success.\n"
       " - On failure, the error_message is non-empty and pixbuf is "
       "empty.")
-      .def_readonly("pixbuf", &wuffs_aux_wrap::ImageDecodingResult::pixbuf,
-                    "np.array: decoded pixel buffer (uint8 Numpy array of [H, "
-                    "W, C] shape).")
+      .def_property_readonly(
+          "pixbuf",
+          [](wuffs_aux_wrap::ImageDecodingResult& self)
+              -> pybind11::array_t<uint8_t> {
+            const auto height = self.pixcfg.height();
+            const auto width = self.pixcfg.width();
+
+            if (width == 0 || height == 0) {
+              return {};
+            }
+
+            constexpr size_t kNumDimensions = 3;
+            const auto channels = self.pixcfg.pixbuf_len() / (width * height);
+            const std::array<size_t, kNumDimensions> shape = {height, width,
+                                                              channels};
+            const std::array<size_t, kNumDimensions> strides = {
+                width * channels, channels, 1};
+
+            return pybind11::array_t<uint8_t>(pybind11::buffer_info(
+                self.pixbuf.data(), sizeof(uint8_t),
+                pybind11::format_descriptor<uint8_t>::value, kNumDimensions,
+                shape, strides));
+          },
+          "np.array: decoded pixel buffer (uint8 Numpy array of [H, "
+          "W, C] shape).")
       .def_readonly("pixcfg", &wuffs_aux_wrap::ImageDecodingResult::pixcfg,
                     "wuffs_base__pixel_config: decoded pixel buffer config.")
       .def_readonly("reported_metadata",
@@ -337,7 +365,7 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
   py::class_<wuffs_aux_wrap::ImageDecoder>(aux_m, "ImageDecoder",
                                            "Image decoder class.")
       .def(py::init<const wuffs_aux_wrap::ImageDecoderConfig&>(),
-           "Sole constructor.\n\n"
+           "Sole constructor. Please note that the class is not thread-safe.\n\n"
            "Args:"
            "\n config (ImageDecoderConfig): image decoder config.")
       .def(
@@ -345,6 +373,7 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
           [](wuffs_aux_wrap::ImageDecoder& image_decoder,
              const py::bytes& data) -> wuffs_aux_wrap::ImageDecodingResult {
             py::buffer_info data_view(py::buffer(data).request());
+            pybind11::gil_scoped_release release_gil;
             return image_decoder.Decode(
                 reinterpret_cast<uint8_t*>(data_view.ptr), data_view.size);
           },
@@ -358,6 +387,7 @@ py::enum_<wuffs_aux_wrap::PixelFormat>(
           [](wuffs_aux_wrap::ImageDecoder& image_decoder,
              const std::string& path_to_file)
               -> wuffs_aux_wrap::ImageDecodingResult {
+            pybind11::gil_scoped_release release_gil;
             return image_decoder.Decode(path_to_file);
           },
           "Decodes image using given file path.\n\n"

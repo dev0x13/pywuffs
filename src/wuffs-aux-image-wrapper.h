@@ -1,7 +1,5 @@
 #pragma once
 
-#include <pybind11/numpy.h>
-
 #include <map>
 #include <string>
 #include <unordered_set>
@@ -138,8 +136,8 @@ struct ImageDecoderConfig {
   uint64_t max_incl_metadata_length =
       wuffs_aux::DecodeImageArgMaxInclMetadataLength::DefaultValue().repr;
   std::vector<ImageDecoderType> enabled_decoders = {
-      ImageDecoderType::BMP, ImageDecoderType::GIF, ImageDecoderType::NIE,
-      ImageDecoderType::PNG, ImageDecoderType::TGA, ImageDecoderType::WBMP,
+      ImageDecoderType::BMP,  ImageDecoderType::GIF,  ImageDecoderType::NIE,
+      ImageDecoderType::PNG,  ImageDecoderType::TGA,  ImageDecoderType::WBMP,
       ImageDecoderType::JPEG, ImageDecoderType::WEBP, ImageDecoderType::QOI,
       ImageDecoderType::ETC2, ImageDecoderType::TH};
   uint32_t pixel_format = wuffs_base__make_pixel_format(
@@ -151,10 +149,10 @@ struct ImageDecoderConfig {
 // input
 struct MetadataEntry {
   wuffs_base__more_information minfo{};
-  pybind11::array_t<uint8_t> data;
+  std::vector<uint8_t> data;
 
   MetadataEntry(const wuffs_base__more_information& minfo,
-                pybind11::array_t<uint8_t>&& data)
+                std::vector<uint8_t>&& data)
       : minfo(minfo), data(std::move(data)) {}
 
   MetadataEntry() : minfo(wuffs_base__empty_more_information()) {}
@@ -178,7 +176,7 @@ struct MetadataEntry {
 
 struct ImageDecodingResult {
   wuffs_base__pixel_config pixcfg = wuffs_base__null_pixel_config();
-  pybind11::array_t<uint8_t> pixbuf;
+  std::vector<uint8_t> pixbuf;
   std::vector<MetadataEntry> reported_metadata;
   std::string error_message;
 
@@ -274,7 +272,7 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
   std::string HandleMetadata(const wuffs_base__more_information& minfo,
                              wuffs_base__slice_u8 raw) override {
     decoding_result_.reported_metadata.emplace_back(
-        minfo, pybind11::array(pybind11::dtype("uint8"), {raw.len}, raw.ptr));
+        minfo, std::vector<uint8_t>{raw.ptr, raw.ptr + raw.len});
     return "";
   }
 
@@ -296,15 +294,15 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
     if (len == 0 || SIZE_MAX < len) {
       return {wuffs_aux::DecodeImage_UnsupportedPixelConfiguration};
     }
-    decoding_result_.pixbuf.resize({len});
+    decoding_result_.pixbuf.resize(len);
     if (!allow_uninitialized_memory) {
-      std::memset(decoding_result_.pixbuf.mutable_data(), 0,
+      std::memset(decoding_result_.pixbuf.data(), 0,
                   decoding_result_.pixbuf.size());
     }
     wuffs_base__pixel_buffer pixbuf;
     wuffs_base__status status = pixbuf.set_from_slice(
         &image_config.pixcfg,
-        wuffs_base__make_slice_u8(decoding_result_.pixbuf.mutable_data(),
+        wuffs_base__make_slice_u8(decoding_result_.pixbuf.data(),
                                   decoding_result_.pixbuf.size()));
     if (!status.is_ok()) {
       decoding_result_.pixbuf = {};
@@ -353,12 +351,6 @@ class ImageDecoder : public wuffs_aux::DecodeImageCallbacks {
       decoding_result_.pixcfg = wuffs_base__null_pixel_config();
     } else {
       decoding_result_.pixcfg = decode_image_result.pixbuf.pixcfg;
-      decoding_result_.pixbuf =
-          decoding_result_.pixbuf.reshape(std::vector<size_t>{
-              decoding_result_.pixcfg.height(), decoding_result_.pixcfg.width(),
-              decoding_result_.pixcfg.pixbuf_len() /
-                  (decoding_result_.pixcfg.width() *
-                   decoding_result_.pixcfg.height())});
     }
     return std::move(decoding_result_);
   }
